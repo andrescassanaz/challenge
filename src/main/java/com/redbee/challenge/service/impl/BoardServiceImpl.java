@@ -49,7 +49,7 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public List<Board> findByUser(User user) {
+	public Set<Board> findByUser(User user) {
 		return boardRepository.findByUser(user);
 	}
 

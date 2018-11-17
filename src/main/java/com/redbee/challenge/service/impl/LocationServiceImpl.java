@@ -93,8 +93,9 @@ public class LocationServiceImpl implements LocationService {
 				Location location = buildLocation(woeid, yahooApiResponse);
 
 				Board board = boardService.findBoardById(locationDto.getBoardId());
-
-				Set<Board> boards = new HashSet<Board>();
+				
+				
+				Set<Board> boards = boardService.findByUser(board.getUser());
 				boards.add(board);
 				location.setBoards(boards);
 

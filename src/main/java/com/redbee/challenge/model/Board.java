@@ -26,7 +26,7 @@ public class Board {
 	private String name;
 
 	
-	@ManyToMany(mappedBy = "boards",fetch=FetchType.EAGER)
+	@ManyToMany(mappedBy = "boards")
 	private Set<Location> locations = new HashSet<Location>();
 
 	@ManyToOne

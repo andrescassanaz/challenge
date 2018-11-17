@@ -8,6 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 @Entity
@@ -23,7 +25,11 @@ public class Location {
 	@Column
 	String country;
 
-	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	//@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@ManyToMany
+	@JoinTable(name="location_x_board",
+				joinColumns={@JoinColumn(name="location_id")},
+				inverseJoinColumns= {@JoinColumn(name="board_id")})
 	private Set<Board> boards = new HashSet<Board>();
 
 	public Location() {
