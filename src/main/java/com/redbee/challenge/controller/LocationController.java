@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.redbee.challenge.service.LocationService;
-import com.redbee.challenge.service.WeatherHistoryService;
+import com.redbee.challenge.service.WeatherPointService;
 import com.redbee.challenge.util.RestResponse;
 import com.redbee.challenge.util.yahoo.api.YahooRestClientService;
 
@@ -17,7 +17,7 @@ public class LocationController {
 	private LocationService locationService;
 
 	@Autowired
-	WeatherHistoryService weatherHistoryService;
+	WeatherPointService weatherPointService;
 
 	@Autowired
 	YahooRestClientService yahooRestClientService;

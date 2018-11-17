@@ -1,6 +1,8 @@
 package com.redbee.challenge.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -11,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+
 
 @Entity
 public class Location {
@@ -25,12 +29,14 @@ public class Location {
 	@Column
 	String country;
 
-	//@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	// @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	@ManyToMany
-	@JoinTable(name="location_x_board",
-				joinColumns={@JoinColumn(name="location_id")},
-				inverseJoinColumns= {@JoinColumn(name="board_id")})
+	@JoinTable(name = "location_x_board", joinColumns = { @JoinColumn(name = "location_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "board_id") })
 	private Set<Board> boards = new HashSet<Board>();
+
+	@OneToMany(mappedBy = "location")
+	private List<WeatherPoint> weatherPoints;
 
 	public Location() {
 	}
@@ -82,6 +88,14 @@ public class Location {
 
 	public void setCountry(String country) {
 		this.country = country;
+	}
+
+	public List<WeatherPoint> getWeatherPoints() {
+		return weatherPoints;
+	}
+
+	public void setWeatherPoints(List<WeatherPoint> weatherPoints) {
+		this.weatherPoints = weatherPoints;
 	}
 
 }

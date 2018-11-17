@@ -1,10 +1,14 @@
 package com.redbee.challenge.dto;
 
+import java.util.List;
+
 public class LocationDto {
 
 	private long woeid;
 	private String city;
+	private String country;
 	private long boardId;
+	private List<WeatherPointDto> wheaterPoints;
 
 	public long getBoardId() {
 		return boardId;
@@ -28,6 +32,22 @@ public class LocationDto {
 
 	public void setWoeid(long woeid) {
 		this.woeid = woeid;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public List<WeatherPointDto> getWheaterPoints() {
+		return wheaterPoints;
+	}
+
+	public void setWheaterPoints(List<WeatherPointDto> wheaterPoints) {
+		this.wheaterPoints = wheaterPoints;
 	}
 
 }

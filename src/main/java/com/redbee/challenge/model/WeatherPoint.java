@@ -13,7 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 @Entity
-public class WeatherHistory {
+public class WeatherPoint {
 
 	@Column
 	@Id
@@ -33,11 +33,11 @@ public class WeatherHistory {
 	@Column
 	private String description;
 
-	public WeatherHistory() {
+	public WeatherPoint() {
 
 	}
 
-	public WeatherHistory(Location location, Long date, int temp, String description) {
+	public WeatherPoint(Location location, Long date, int temp, String description) {
 		this.location = location;
 		this.date = date;
 		this.temp = temp;
@@ -74,6 +74,14 @@ public class WeatherHistory {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 }

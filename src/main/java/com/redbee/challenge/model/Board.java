@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Board {
 
@@ -25,8 +27,7 @@ public class Board {
 	@Column
 	private String name;
 
-	
-	@ManyToMany(mappedBy = "boards")
+	@ManyToMany(mappedBy = "boards", fetch = FetchType.EAGER)
 	private Set<Location> locations = new HashSet<Location>();
 
 	@ManyToOne

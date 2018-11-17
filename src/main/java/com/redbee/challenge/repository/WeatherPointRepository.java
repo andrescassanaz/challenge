@@ -6,10 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.redbee.challenge.model.Location;
-import com.redbee.challenge.model.WeatherHistory;
+import com.redbee.challenge.model.WeatherPoint;
 
 @Repository
-public interface WeatherHistoryRepository extends JpaRepository<WeatherHistory, Serializable> {
+public interface WeatherPointRepository extends JpaRepository<WeatherPoint, Serializable> {
 
 	/**
 	 * Find Weather History Point by location and date.
@@ -18,7 +18,7 @@ public interface WeatherHistoryRepository extends JpaRepository<WeatherHistory, 
 	 * @param date the date
 	 * @return the weather history point
 	 */
-	public WeatherHistory findByLocationAndDate(Location location, long date);
+	public WeatherPoint findByLocationAndDate(Location location, long date);
 
 }
 	

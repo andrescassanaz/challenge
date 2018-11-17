@@ -4,25 +4,32 @@ import java.util.List;
 
 public class QueryResult {
 
-	private Integer totalRecords;
-	private List<Object> list;
-	
-	
+	private RestResponse restResponse;
+	private List<Object> queryResponse;
 
-	public Integer getTotalRecords() {
-		return totalRecords;
+	public QueryResult(RestResponse restResponse, List<Object> list) {
+		this.restResponse = restResponse;
+		this.queryResponse = list;
 	}
 
-	public void setTotalRecords(Integer totalRecords) {
-		this.totalRecords = totalRecords;
+	public QueryResult(RestResponse restResponse) {
+		this.restResponse = restResponse;
+	}
+	
+	public RestResponse getRestResponse() {
+		return restResponse;
+	}
+
+	public void setRestResponse(RestResponse restResponse) {
+		this.restResponse = restResponse;
 	}
 
 	public List<Object> getList() {
-		return list;
+		return queryResponse;
 	}
 
 	public void setList(List<Object> list) {
-		this.list = list;
+		this.queryResponse = list;
 	}
 
 }

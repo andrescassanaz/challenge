@@ -1,10 +1,16 @@
 package com.redbee.challenge.service;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.redbee.challenge.dto.BoardDto;
 import com.redbee.challenge.model.Board;
 import com.redbee.challenge.model.User;
+import com.redbee.challenge.model.WeatherPoint;
 import com.redbee.challenge.util.yahoo.api.data.Condition;
 
 public interface BoardService {
@@ -39,5 +45,10 @@ public interface BoardService {
 	 * @return the actual weather by board
 	 */
 	public List<Condition> getActualWeatherByBoard(String boardJson);
+
+
+
+
+	public List<BoardDto> getBoardsByUser(String userJson) throws JsonParseException, JsonMappingException, IOException, ParseException;
 
 }

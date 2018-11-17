@@ -1,7 +1,9 @@
 package com.redbee.challenge.service.impl;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -9,13 +11,20 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.redbee.challenge.dto.BoardDto;
+import com.redbee.challenge.dto.UserDto;
 import com.redbee.challenge.model.Board;
 import com.redbee.challenge.model.Location;
 import com.redbee.challenge.model.User;
+import com.redbee.challenge.model.WeatherPoint;
 import com.redbee.challenge.repository.BoardRepository;
 import com.redbee.challenge.service.BoardService;
+import com.redbee.challenge.service.MapperService;
+import com.redbee.challenge.service.UserService;
+import com.redbee.challenge.service.WeatherPointService;
 import com.redbee.challenge.util.yahoo.api.YahooRestClientService;
 import com.redbee.challenge.util.yahoo.api.data.Condition;
 import com.redbee.challenge.util.yahoo.api.data.YahooApiResponse;
@@ -27,10 +36,23 @@ public class BoardServiceImpl implements BoardService {
 	BoardRepository boardRepository;
 
 	@Autowired
+	UserService userService;
+
+	@Autowired
+	WeatherPointService weatherPointService;
+
+	@Autowired
 	YahooRestClientService yahooRestClientService;
 
-	/* (non-Javadoc)
-	 * @see com.redbee.challenge.service.BoardService#save(com.redbee.challenge.model.Board)
+	@Autowired
+	MapperService mapperService;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.redbee.challenge.service.BoardService#save(com.redbee.challenge.model.
+	 * Board)
 	 */
 	@Override
 	public void save(Board board) {
@@ -40,7 +62,9 @@ public class BoardServiceImpl implements BoardService {
 
 	private ObjectMapper mapper = new ObjectMapper();
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.redbee.challenge.service.BoardService#findBoardById(long)
 	 */
 	@Override
@@ -54,17 +78,24 @@ public class BoardServiceImpl implements BoardService {
 
 	}
 
-	/* (non-Javadoc)
-	 * @see com.redbee.challenge.service.BoardService#findByUser(com.redbee.challenge.model.User)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.redbee.challenge.service.BoardService#findByUser(com.redbee.challenge.
+	 * model.User)
 	 */
 	@Override
 	public Set<Board> findByUser(User user) {
 		return boardRepository.findByUser(user);
 	}
 
-
-	/* (non-Javadoc)
-	 * @see com.redbee.challenge.service.BoardService#getActualWeatherByBoard(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.redbee.challenge.service.BoardService#getActualWeatherByBoard(java.lang.
+	 * String)
 	 */
 	@Override
 	public List<Condition> getActualWeatherByBoard(String boardJson) {
@@ -88,4 +119,30 @@ public class BoardServiceImpl implements BoardService {
 		return conditions;
 	}
 
+	@Override
+	public List<BoardDto> getBoardsByUser(String userJson)
+			throws JsonParseException, JsonMappingException, IOException, ParseException {
+
+		UserDto userDto = this.mapper.readValue(userJson, UserDto.class);
+
+		User user = userService.findById(userDto.getId());
+
+		Set<Board> boardsOfUser = boardRepository.findByUser(user);
+
+		List<BoardDto> boardsDto = new ArrayList<BoardDto>();
+		for (Board board : boardsOfUser) {
+			boardsDto.add(mapperService.mapBoardToDto(board));
+			for (Location location : board.getLocations()) {
+				YahooApiResponse weatherResponse = yahooRestClientService.getWeatherFromWoeid(location.getWoeid());
+				WeatherPoint weatherPoint = weatherPointService.buildWeatherPoint(location, weatherResponse);
+				weatherPointService.saveIfNecessary(weatherPoint);
+				List<WeatherPoint> weatherPoints = new ArrayList<WeatherPoint>();
+				weatherPoints.add(weatherPoint);
+				location.setWeatherPoints(weatherPoints);
+			}
+		}
+
+		return boardsDto;
+
+	}
 }
