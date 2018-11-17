@@ -43,7 +43,7 @@ public class BoardController {
 				Set<Location> locations = board.getLocations();
 				for (Location location : locations) {
 					YahooApiResponse yahooApiResponse = yahooRestClientService
-							.getConditionFromWoeid(location.getWoeid());
+							.getWeatherFromWoeid(location.getWoeid());
 					Condition condition = yahooApiResponse.getQuery().getResults().getChannel().getItem()
 							.getCondition();
 					conditions.add(condition);

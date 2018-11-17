@@ -17,7 +17,13 @@ public class Location {
 	@Column
 	long woeid;
 
-	@ManyToMany(cascade=CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@Column
+	String city;
+
+	@Column
+	String country;
+
+	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	private Set<Board> boards = new HashSet<Board>();
 
 	public Location() {
@@ -27,13 +33,18 @@ public class Location {
 		this.woeid = woeid;
 	}
 
-//	public long getId() {
-//		return id;
-//	}
-//
-//	public void setId(long id) {
-//		this.id = id;
-//	}
+	public Location(long woeid, String city, String country) {
+		this.woeid = woeid;
+		this.city = city;
+		this.country = country;
+	}
+
+	public Location(long woeid, String city, String country, Set<Board> boards) {
+		this.woeid = woeid;
+		this.city = city;
+		this.country = country;
+		this.boards = boards;
+	}
 
 	public long getWoeid() {
 		return woeid;
@@ -49,6 +60,22 @@ public class Location {
 
 	public void setBoards(Set<Board> boards) {
 		this.boards = boards;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
 	}
 
 }
