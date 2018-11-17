@@ -43,9 +43,7 @@ public class YahooRestClientService {
 		;
 		try {
 			yahooApiResponse = objectMapper.readValue(response.getBody(), YahooApiResponse.class);
-
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -79,7 +77,6 @@ public class YahooRestClientService {
 		try {
 			yahooApiResponse = objectMapper.readValue(response.getBody(), YahooApiResponse.class);
 			woeid = yahooApiResponse.getQuery().getResults().getPlace().getWoeid();
-			System.out.println("SE CONSUMIO getWoeidFromCityName");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (NullPointerException e) {

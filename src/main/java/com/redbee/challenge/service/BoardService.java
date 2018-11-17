@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.redbee.challenge.model.Board;
 import com.redbee.challenge.model.User;
+import com.redbee.challenge.util.yahoo.api.data.Condition;
 
 public interface BoardService {
 
@@ -12,5 +13,7 @@ public interface BoardService {
 	public Board findBoardById(long id);
 
 	public List<Board> findByUser(User user);
+
+	public List<Condition> getActualConditionsByBoard(String boardJson);
 
 }

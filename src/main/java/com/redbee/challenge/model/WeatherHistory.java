@@ -1,5 +1,9 @@
 package com.redbee.challenge.model;
 
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,7 +25,7 @@ public class WeatherHistory {
 	private Location location;
 
 	@Column
-	private String date;
+	private Long date;
 
 	@Column
 	private int temp;
@@ -33,7 +37,7 @@ public class WeatherHistory {
 
 	}
 
-	public WeatherHistory(Location location, String date, int temp, String description) {
+	public WeatherHistory(Location location, Long date, int temp, String description) {
 		this.location = location;
 		this.date = date;
 		this.temp = temp;
@@ -48,11 +52,11 @@ public class WeatherHistory {
 		this.location = location;
 	}
 
-	public String getDate() {
+	public Long getDate() {
 		return date;
 	}
 
-	public void setDate(String date) {
+	public void setDate(Long date) {
 		this.date = date;
 	}
 
