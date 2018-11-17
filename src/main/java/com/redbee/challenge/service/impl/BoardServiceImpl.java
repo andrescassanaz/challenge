@@ -29,6 +29,9 @@ public class BoardServiceImpl implements BoardService {
 	@Autowired
 	YahooRestClientService yahooRestClientService;
 
+	/* (non-Javadoc)
+	 * @see com.redbee.challenge.service.BoardService#save(com.redbee.challenge.model.Board)
+	 */
 	@Override
 	public void save(Board board) {
 		boardRepository.save(board);
@@ -37,6 +40,9 @@ public class BoardServiceImpl implements BoardService {
 
 	private ObjectMapper mapper = new ObjectMapper();
 
+	/* (non-Javadoc)
+	 * @see com.redbee.challenge.service.BoardService#findBoardById(long)
+	 */
 	@Override
 	public Board findBoardById(long id) {
 		Optional<Board> board = boardRepository.findById(id);
@@ -48,13 +54,20 @@ public class BoardServiceImpl implements BoardService {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see com.redbee.challenge.service.BoardService#findByUser(com.redbee.challenge.model.User)
+	 */
 	@Override
 	public Set<Board> findByUser(User user) {
 		return boardRepository.findByUser(user);
 	}
 
+
+	/* (non-Javadoc)
+	 * @see com.redbee.challenge.service.BoardService#getActualWeatherByBoard(java.lang.String)
+	 */
 	@Override
-	public List<Condition> getActualConditionsByBoard(String boardJson) {
+	public List<Condition> getActualWeatherByBoard(String boardJson) {
 		List<Condition> conditions = new ArrayList<Condition>();
 		try {
 			BoardDto BoardDto = this.mapper.readValue(boardJson, BoardDto.class);

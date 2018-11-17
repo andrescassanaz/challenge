@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.redbee.challenge.service.BoardService;
 import com.redbee.challenge.service.LocationService;
 import com.redbee.challenge.service.WeatherHistoryService;
 import com.redbee.challenge.util.RestResponse;
@@ -23,12 +22,24 @@ public class LocationController {
 	@Autowired
 	YahooRestClientService yahooRestClientService;
 
+	/**
+	 * Adds a new location.
+	 *
+	 * @param locationJson the location on json format
+	 * @return restResponse
+	 */
 	@PostMapping("/addLocation")
 	public RestResponse addLocation(@RequestBody String locationJson) {
 		RestResponse restResponse = locationService.addLocation(locationJson);
 		return restResponse;
 	}
 
+	/**
+	 * Delete.
+	 *
+	 * @param locationJson the location on json format
+	 * @return restResponse
+	 */
 	@PostMapping("/deleteLocation")
 	public RestResponse delete(@RequestBody String locationJson) {
 		RestResponse restResponse = locationService.deleteLocation(locationJson);

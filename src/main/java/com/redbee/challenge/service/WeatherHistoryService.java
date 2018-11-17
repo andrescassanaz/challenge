@@ -5,8 +5,21 @@ import com.redbee.challenge.model.WeatherHistory;
 
 public interface WeatherHistoryService {
 
+	/**
+	 * Save.
+	 *
+	 * @param weatherHistory the weather history
+	 * @return the saved weather history
+	 */
 	public WeatherHistory save(WeatherHistory weatherHistory);
 
-	public WeatherHistory findByLocationAndDate(Location locationSaved, Long date);
+	/**
+	 * Find by location and date.
+	 *
+	 * @param savedLocation the saved location 
+	 * @param date the date
+	 * @return the weather history
+	 */
+	public WeatherHistory findByLocationAndDate(Location savedLocation, Long date);
 	
 }

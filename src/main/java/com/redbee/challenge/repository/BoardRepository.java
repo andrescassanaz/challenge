@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package com.redbee.challenge.repository;
 
 import java.io.Serializable;
@@ -12,6 +15,12 @@ import com.redbee.challenge.model.User;
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Serializable> {
 
+	/**
+	 * Find by user.
+	 *
+	 * @param user the user
+	 * @return Boards of a user
+	 */
 	Set<Board> findByUser(User user);
 
 }

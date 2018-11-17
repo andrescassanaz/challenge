@@ -4,12 +4,8 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
@@ -55,17 +51,36 @@ public class LocationServiceImpl implements LocationService {
 
 	private DateFormat dateFormater = new SimpleDateFormat("EEE, d MMM yyyy hh:mm aaa z", Locale.ENGLISH);
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.redbee.challenge.service.LocationService#save(com.redbee.challenge.model.
+	 * Location)
+	 */
 	@Override
 	public Location save(Location location) {
 		return locationRepository.save(location);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.redbee.challenge.service.LocationService#delete(com.redbee.challenge.
+	 * model.Location)
+	 */
 	@Override
 	public void delete(Location location) {
 		locationRepository.delete(location);
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.redbee.challenge.service.LocationService#findById(long)
+	 */
 	@Override
 	public Location findById(long id) {
 		Optional<Location> location = locationRepository.findById(id);
@@ -77,6 +92,12 @@ public class LocationServiceImpl implements LocationService {
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.redbee.challenge.service.LocationService#addLocation(java.lang.String)
+	 */
 	@Override
 	public RestResponse addLocation(String locationJson) {
 		RestResponse restResponse;
@@ -93,19 +114,19 @@ public class LocationServiceImpl implements LocationService {
 				Location location = buildLocation(woeid, yahooApiResponse);
 
 				Board board = boardService.findBoardById(locationDto.getBoardId());
-				
-				
+
 				Set<Board> boards = boardService.findByUser(board.getUser());
 				boards.add(board);
 				location.setBoards(boards);
 
-				Location locationSaved = this.save(location);
+				Location savedLocation = this.save(location);
 
-				WeatherHistory weatherHistoryPoint = buildWeatherHistory(locationSaved, yahooApiResponse);
+				WeatherHistory weatherHistoryPoint = buildWeatherHistory(savedLocation, yahooApiResponse);
 
-				WeatherHistory weatherHistoryPointDB = weatherHistoryService.findByLocationAndDate(locationSaved, weatherHistoryPoint.getDate());
-				
-				if(weatherHistoryPointDB == null) {
+				WeatherHistory weatherHistoryPointDB = weatherHistoryService.findByLocationAndDate(savedLocation,
+						weatherHistoryPoint.getDate());
+
+				if (weatherHistoryPointDB == null) {
 					weatherHistoryService.save(weatherHistoryPoint);
 				}
 
@@ -127,6 +148,12 @@ public class LocationServiceImpl implements LocationService {
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.redbee.challenge.service.LocationService#deleteLocation(java.lang.String)
+	 */
 	@Override
 	public RestResponse deleteLocation(String locationJson) {
 		RestResponse restResponse;
@@ -142,17 +169,32 @@ public class LocationServiceImpl implements LocationService {
 
 		} catch (IOException e) {
 			e.printStackTrace();
-			restResponse = new RestResponse(HttpStatus.CONFLICT.value(), "Error mapping location");
+			restResponse = new RestResponse(HttpStatus.CONFLICT.value(), "Mapping location error");
 		}
 		return restResponse;
 	}
 
+	/**
+	 * Builds the location.
+	 *
+	 * @param woeid            the woeid of city
+	 * @param yahooApiResponse the yahoo api response
+	 * @return the location
+	 */
 	private Location buildLocation(Long woeid, YahooApiResponse yahooApiResponse) {
 		String city = yahooApiResponse.getQuery().getResults().getChannel().getLocation().getCity();
 		String country = yahooApiResponse.getQuery().getResults().getChannel().getLocation().getCountry();
 		return new Location(woeid, city, country);
 	}
 
+	/**
+	 * Builds the weather history.
+	 *
+	 * @param locationSaved    the location saved
+	 * @param yahooApiResponse the yahoo api response
+	 * @return Weather History Point
+	 * @throws ParseException
+	 */
 	private WeatherHistory buildWeatherHistory(Location locationSaved, YahooApiResponse yahooApiResponse)
 			throws ParseException {
 
@@ -166,6 +208,13 @@ public class LocationServiceImpl implements LocationService {
 		return weatherHistory;
 	}
 
+	/**
+	 * Parses the string to calendar.
+	 *
+	 * @param dateStr date in string format
+	 * @return Calendar
+	 * @throws ParseException
+	 */
 	private Calendar parseStringToCalendar(String dateStr) throws ParseException {
 		Date temporalDate = dateFormater.parse(dateStr);
 		Calendar date = Calendar.getInstance();

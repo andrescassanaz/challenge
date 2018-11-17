@@ -15,11 +15,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.redbee.challenge.util.exception.CityNotFoundException;
 import com.redbee.challenge.util.yahoo.api.data.YahooApiResponse;
 
+/**
+ * The Yahoo Rest Client Service.
+ */
 @Service
 public class YahooRestClientService {
 
+	/** The Constant URL of API. */
 	private static final String URL = "http://query.yahooapis.com/v1/public/yql";
 
+	/**
+	 * Gets the weather from woeid.
+	 *
+	 * @param woeid the woeid
+	 * @return the actual weather
+	 */
 	public YahooApiResponse getWeatherFromWoeid(long woeid) {
 
 		RestTemplate restTemplate = new RestTemplate();
@@ -51,6 +61,13 @@ public class YahooRestClientService {
 
 	}
 
+	/**
+	 * Gets the woeid from city name.
+	 *
+	 * @param cityName the city name
+	 * @return the woeid from city name
+	 * @throws CityNotFoundException exception for city not found
+	 */
 	public Long getWoeidFromCityName(String cityName) throws CityNotFoundException {
 
 		Long woeid = null;
