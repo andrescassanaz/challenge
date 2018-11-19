@@ -1,9 +1,5 @@
 package com.redbee.challenge.model;
 
-import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,16 +27,20 @@ public class WeatherPoint {
 	private int temp;
 
 	@Column
+	private int code;
+
+	@Column
 	private String description;
 
 	public WeatherPoint() {
 
 	}
 
-	public WeatherPoint(Location location, Long date, int temp, String description) {
+	public WeatherPoint(Location location, Long date, int temp, int code, String description) {
 		this.location = location;
 		this.date = date;
 		this.temp = temp;
+		this.code = code;
 		this.description = description;
 	}
 
@@ -82,6 +82,14 @@ public class WeatherPoint {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public int getCode() {
+		return code;
+	}
+
+	public void setCode(int code) {
+		this.code = code;
 	}
 
 }

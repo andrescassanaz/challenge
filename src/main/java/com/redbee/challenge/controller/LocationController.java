@@ -5,6 +5,7 @@ import java.text.ParseException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,7 @@ import com.redbee.challenge.util.exception.CityNotFoundException;
 import com.redbee.challenge.util.yahoo.api.YahooRestClientService;
 
 @RestController
+@CrossOrigin
 public class LocationController {
 
 	private static int INTERNAL_SERVER_ERRROR = HttpStatus.INTERNAL_SERVER_ERROR.value();

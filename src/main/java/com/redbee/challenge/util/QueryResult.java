@@ -7,15 +7,15 @@ public class QueryResult {
 	private RestResponse restResponse;
 	private List<Object> queryResponse;
 
-	public QueryResult(RestResponse restResponse, List<Object> list) {
+	public QueryResult(RestResponse restResponse, List<Object> queryResponse) {
 		this.restResponse = restResponse;
-		this.queryResponse = list;
+		this.queryResponse = queryResponse;
 	}
-
+	
 	public QueryResult(RestResponse restResponse) {
 		this.restResponse = restResponse;
 	}
-	
+
 	public RestResponse getRestResponse() {
 		return restResponse;
 	}
@@ -24,12 +24,12 @@ public class QueryResult {
 		this.restResponse = restResponse;
 	}
 
-	public List<Object> getList() {
+	public List<Object> getQueryResponse() {
 		return queryResponse;
 	}
 
-	public void setList(List<Object> list) {
-		this.queryResponse = list;
+	public void setQueryResponse(List<Object> queryResponse) {
+		this.queryResponse = queryResponse;
 	}
 
 }

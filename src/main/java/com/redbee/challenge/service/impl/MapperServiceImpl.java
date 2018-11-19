@@ -25,6 +25,7 @@ public class MapperServiceImpl implements MapperService {
 		dto.setDescription(weatherPoint.getDescription());
 		dto.setId(weatherPoint.getId());
 		dto.setTemp(weatherPoint.getTemp());
+		dto.setCode(weatherPoint.getCode());
 		return dto;
 	}
 
@@ -37,7 +38,7 @@ public class MapperServiceImpl implements MapperService {
 		for (WeatherPoint weatherPoint : location.getWeatherPoints()) {
 			listWeatherPoint.add(mapWeatherPointToDto(weatherPoint));
 		}
-		dto.setWheaterPoints(listWeatherPoint);
+		dto.setWeatherPoints(listWeatherPoint);
 		dto.setWoeid(location.getWoeid());
 		return dto;
 

@@ -48,9 +48,10 @@ public class WeatherPointServiceImpl implements WeatherPointService {
 				yahooApiResponse.getQuery().getResults().getChannel().getItem().getCondition().getDate());
 
 		int temp = yahooApiResponse.getQuery().getResults().getChannel().getItem().getCondition().getTemp();
+		int code = yahooApiResponse.getQuery().getResults().getChannel().getItem().getCondition().getCode();
 		String description = yahooApiResponse.getQuery().getResults().getChannel().getItem().getCondition().getText();
 
-		WeatherPoint weatherPoint = new WeatherPoint(locationSaved, date.getTimeInMillis(), temp, description);
+		WeatherPoint weatherPoint = new WeatherPoint(locationSaved, date.getTimeInMillis(), temp, code, description);
 		return weatherPoint;
 	}
 

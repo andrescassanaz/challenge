@@ -8,7 +8,7 @@ public class LocationDto {
 	private String city;
 	private String country;
 	private long boardId;
-	private List<WeatherPointDto> wheaterPoints;
+	private List<WeatherPointDto> weatherPoints;
 
 	public long getBoardId() {
 		return boardId;
@@ -42,12 +42,12 @@ public class LocationDto {
 		this.country = country;
 	}
 
-	public List<WeatherPointDto> getWheaterPoints() {
-		return wheaterPoints;
+	public List<WeatherPointDto> getWeatherPoints() {
+		return weatherPoints;
 	}
 
-	public void setWheaterPoints(List<WeatherPointDto> wheaterPoints) {
-		this.wheaterPoints = wheaterPoints;
+	public void setWeatherPoints(List<WeatherPointDto> weatherPoints) {
+		this.weatherPoints = weatherPoints;
 	}
 
 }

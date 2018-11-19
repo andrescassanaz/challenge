@@ -5,18 +5,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Condition {
 
-	private long code;
+	private int code;
 	private String date;
 	private int temp;
 	private String text;
-
-	public long getCode() {
-		return code;
-	}
-
-	public void setCode(long code) {
-		this.code = code;
-	}
 
 	public String getDate() {
 		return date;
@@ -40,6 +32,14 @@ public class Condition {
 
 	public void setText(String text) {
 		this.text = text;
+	}
+
+	public int getCode() {
+		return code;
+	}
+
+	public void setCode(int code) {
+		this.code = code;
 	}
 
 }

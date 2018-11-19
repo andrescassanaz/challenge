@@ -46,8 +46,6 @@ public class YahooRestClientService {
 		HttpEntity<String> response = restTemplate.exchange(builder.build().encode().toUri(), HttpMethod.GET, entity,
 				String.class);
 
-		System.out.println(response.getBody());
-
 		ObjectMapper objectMapper = new ObjectMapper();
 		YahooApiResponse yahooApiResponse = new YahooApiResponse();
 		;
