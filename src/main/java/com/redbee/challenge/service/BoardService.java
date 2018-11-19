@@ -9,18 +9,11 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.redbee.challenge.dto.BoardDto;
 import com.redbee.challenge.model.Board;
+import com.redbee.challenge.model.Location;
 import com.redbee.challenge.model.User;
-import com.redbee.challenge.model.WeatherPoint;
 import com.redbee.challenge.util.yahoo.api.data.Condition;
 
 public interface BoardService {
-
-	/**
-	 * Save.
-	 *
-	 * @param board the board
-	 */
-	public void save(Board board);
 
 	/**
 	 * Find board by id.
@@ -46,9 +39,13 @@ public interface BoardService {
 	 */
 	public List<Condition> getActualWeatherByBoard(String boardJson);
 
+	public List<BoardDto> getBoardsByUser(String userJson)
+			throws JsonParseException, JsonMappingException, IOException, ParseException;
 
+	public Board save(String boardJson) throws JsonParseException, JsonMappingException, IOException;
 
+	public Set<Board> findByLocations(Set<Location> locations);
 
-	public List<BoardDto> getBoardsByUser(String userJson) throws JsonParseException, JsonMappingException, IOException, ParseException;
+	public void delete(String boardJson) throws JsonParseException, JsonMappingException, IOException;
 
 }

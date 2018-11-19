@@ -29,6 +29,59 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 
+	@PostMapping("/addBoard")
+	public RestResponse addBoard(@RequestBody String boardJson) {
+		RestResponse restResponse;
+		try {
+			boardService.save(boardJson);
+			restResponse = new RestResponse(HttpStatus.OK.value(), "Ok");
+		} catch (JsonParseException e) {
+			restResponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: JsonParseException");
+		} catch (JsonMappingException e) {
+			restResponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: JsonMappingException");
+		} catch (IOException e) {
+			restResponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: IOException");
+		}
+		return restResponse;
+	}
+	
+	@PostMapping("/deleteBoard")
+	public RestResponse deleteBoard(@RequestBody String boardJson) {
+		RestResponse restResponse;
+		try {
+			boardService.delete(boardJson);
+			restResponse = new RestResponse(HttpStatus.OK.value(), "Ok");
+		} catch (JsonParseException e) {
+			restResponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: JsonParseException");
+		} catch (JsonMappingException e) {
+			restResponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: JsonMappingException");
+		} catch (IOException e) {
+			restResponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: IOException");
+		}
+		return restResponse;
+	}
+	
+	@PostMapping("/getBoardsByUser")
+	public QueryResult getBoardsByUser(@RequestBody String userJson) {
+		QueryResult queryResult;
+		try {
+			List<BoardDto> boardsByUser = boardService.getBoardsByUser(userJson);
+			RestResponse restResponse = new RestResponse(HttpStatus.OK.value(), "Ok");
+			queryResult = new QueryResult(restResponse, new ArrayList<Object>(boardsByUser));
+		} catch (JsonParseException e) {
+			queryResult = new QueryResult(new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: JsonParseException"));
+		} catch (JsonMappingException e) {
+			queryResult = new QueryResult(
+					new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: JsonMappingException"));
+		} catch (IOException e) {
+			queryResult = new QueryResult(new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: IOException"));
+		} catch (ParseException e) {
+			queryResult = new QueryResult(new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: ParseException"));
+		}
+		return queryResult;
+	}
+	
+	
 	/**
 	 * Gets the actual weather by board.
 	 *
@@ -40,23 +93,4 @@ public class BoardController {
 		List<Condition> conditions = boardService.getActualWeatherByBoard(boardJson);
 		return conditions;
 	}
-
-	@GetMapping("/getBoardsByUser")
-	public QueryResult getBoardsByUser(@RequestBody String userJson) {
-
-		try {
-			List<BoardDto> boardsByUser = boardService.getBoardsByUser(userJson);
-			RestResponse restResponse = new RestResponse(HttpStatus.OK.value(), "Error mapping location");
-			return new QueryResult(restResponse, new ArrayList<Object>(boardsByUser));
-		} catch (JsonParseException e) {
-			return new QueryResult(new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: JsonParseException"));
-		} catch (JsonMappingException e) {
-			return new QueryResult(new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: JsonMappingException"));
-		} catch (IOException e) {
-			return new QueryResult(new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: IOException"));
-		} catch (ParseException e) {
-			return new QueryResult(new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: ParseException"));
-		}
-	}
-
 }

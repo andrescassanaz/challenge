@@ -1,13 +1,8 @@
 package com.redbee.challenge.service.impl;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -15,13 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.redbee.challenge.dto.LocationDto;
 import com.redbee.challenge.model.Board;
 import com.redbee.challenge.model.Location;
 import com.redbee.challenge.model.WeatherPoint;
 import com.redbee.challenge.repository.LocationRepository;
-import com.redbee.challenge.repository.WeatherPointRepository;
 import com.redbee.challenge.service.BoardService;
 import com.redbee.challenge.service.LocationService;
 import com.redbee.challenge.service.WeatherPointService;
@@ -46,7 +42,6 @@ public class LocationServiceImpl implements LocationService {
 	WeatherPointService weatherPointService;
 
 	private ObjectMapper mapper = new ObjectMapper();
-
 
 	/*
 	 * (non-Javadoc)
@@ -96,46 +91,40 @@ public class LocationServiceImpl implements LocationService {
 	 * com.redbee.challenge.service.LocationService#addLocation(java.lang.String)
 	 */
 	@Override
-	public RestResponse addLocation(String locationJson) {
+	public RestResponse addLocation(String locationJson)
+			throws JsonParseException, JsonMappingException, IOException, CityNotFoundException, ParseException {
 		RestResponse restResponse;
 
-		try {
-			LocationDto locationDto = this.mapper.readValue(locationJson, LocationDto.class);
+		LocationDto locationDto = this.mapper.readValue(locationJson, LocationDto.class);
 
-			Long woeid = yahooRestClientService.getWoeidFromCityName(locationDto.getCity());
+		Long woeid = yahooRestClientService.getWoeidFromCityName(locationDto.getCity());
+		YahooApiResponse yahooApiResponse = yahooRestClientService.getWeatherFromWoeid(woeid);
 
-			YahooApiResponse yahooApiResponse = yahooRestClientService.getWeatherFromWoeid(woeid);
+		if (yahooApiResponse.getQuery().getResults() != null) {
 
-			if (yahooApiResponse.getQuery().getResults() != null) {
+			Location location = buildLocation(woeid, yahooApiResponse);
 
-				Location location = buildLocation(woeid, yahooApiResponse);
+			Board board = boardService.findBoardById(locationDto.getBoardId());
 
-				Board board = boardService.findBoardById(locationDto.getBoardId());
+			Set<Location> locations = new HashSet<Location>();
+			locations.add(location);
+			Set<Board> boards = boardService.findByLocations(locations);
 
-				Set<Board> boards = boardService.findByUser(board.getUser());
-				boards.add(board);
-				location.setBoards(boards);
+			boards.add(board);
+			location.setBoards(boards);
 
-				Location savedLocation = this.save(location);
+			Location savedLocation = this.save(location);
 
-				WeatherPoint weatherPoint = weatherPointService.buildWeatherPoint(savedLocation, yahooApiResponse);
+			WeatherPoint weatherPoint = weatherPointService.buildWeatherPoint(savedLocation, yahooApiResponse);
 
-				weatherPointService.saveIfNecessary(weatherPoint);
-				
-				restResponse = new RestResponse(HttpStatus.OK.value(), "Location saved!");
+			weatherPointService.saveIfNecessary(weatherPoint);
 
-			} else {
-				restResponse = new RestResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "No existe ciudad");
-			}
+			restResponse = new RestResponse(HttpStatus.OK.value(), "Location saved!");
 
-		} catch (IOException e) {
-			e.printStackTrace();
-			restResponse = new RestResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error mapping location");
-		} catch (CityNotFoundException e) {
-			restResponse = new RestResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Ciudad no encontrada");
-		} catch (ParseException e) {
-			restResponse = new RestResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error en parseo de fecha");
+		} else {
+			restResponse = new RestResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "No existe ciudad");
 		}
+
 		return restResponse;
 
 	}
@@ -147,22 +136,19 @@ public class LocationServiceImpl implements LocationService {
 	 * com.redbee.challenge.service.LocationService#deleteLocation(java.lang.String)
 	 */
 	@Override
-	public RestResponse deleteLocation(String locationJson) {
+	public RestResponse deleteLocation(String locationJson)
+			throws JsonParseException, JsonMappingException, IOException {
 		RestResponse restResponse;
-		try {
-			LocationDto locationDto = this.mapper.readValue(locationJson, LocationDto.class);
-			Location location = this.findById(locationDto.getWoeid());
-			if (location != null) {
-				this.delete(location);
-				restResponse = new RestResponse(HttpStatus.OK.value(), "Location Deleted!");
-			} else {
-				restResponse = new RestResponse(HttpStatus.CONFLICT.value(), "Nonexistent location!");
-			}
 
-		} catch (IOException e) {
-			e.printStackTrace();
-			restResponse = new RestResponse(HttpStatus.CONFLICT.value(), "Mapping location error");
+		LocationDto locationDto = this.mapper.readValue(locationJson, LocationDto.class);
+		Location location = this.findById(locationDto.getWoeid());
+		if (location != null) {
+			this.delete(location);
+			restResponse = new RestResponse(HttpStatus.OK.value(), "Location Deleted!");
+		} else {
+			restResponse = new RestResponse(HttpStatus.CONFLICT.value(), "Nonexistent location!");
 		}
+
 		return restResponse;
 	}
 
@@ -178,9 +164,5 @@ public class LocationServiceImpl implements LocationService {
 		String country = yahooApiResponse.getQuery().getResults().getChannel().getLocation().getCountry();
 		return new Location(woeid, city, country);
 	}
-
-	
-
-
 
 }

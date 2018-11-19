@@ -1,7 +1,13 @@
 package com.redbee.challenge.service;
 
+import java.io.IOException;
+import java.text.ParseException;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.redbee.challenge.model.Location;
 import com.redbee.challenge.util.RestResponse;
+import com.redbee.challenge.util.exception.CityNotFoundException;
 
 public interface LocationService {
 
@@ -33,15 +39,24 @@ public interface LocationService {
 	 *
 	 * @param locationJson the location on json format
 	 * @return restResonse
+	 * @throws IOException
+	 * @throws JsonMappingException
+	 * @throws JsonParseException
+	 * @throws CityNotFoundException 
+	 * @throws ParseException 
 	 */
-	public RestResponse addLocation(String locationJson);
+	public RestResponse addLocation(String locationJson) throws JsonParseException, JsonMappingException, IOException, CityNotFoundException, ParseException;
 
 	/**
 	 * Delete location.
 	 *
 	 * @param locationJson the location on json format
 	 * @return restResonse
+	 * @throws IOException
+	 * @throws JsonMappingException
+	 * @throws JsonParseException
 	 */
-	public RestResponse deleteLocation(String locationJson);
+	public RestResponse deleteLocation(String locationJson)
+			throws JsonParseException, JsonMappingException, IOException;
 
 }

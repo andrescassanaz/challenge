@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.PreRemove;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -30,6 +31,13 @@ public class Board {
 	@ManyToMany(mappedBy = "boards", fetch = FetchType.EAGER)
 	private Set<Location> locations = new HashSet<Location>();
 
+	@PreRemove
+	private void removeBoardFromLocation() {
+		for (Location location : locations) {
+			location.getBoards().remove(this);
+		}
+	}
+
 	@ManyToOne
 	@JoinColumn(name = "id_user")
 	private User user;
@@ -40,6 +48,11 @@ public class Board {
 	public Board(String name, Set<Location> locations) {
 		this.name = name;
 		this.locations = locations;
+	}
+
+	public Board(String name, User user) {
+		this.name = name;
+		this.user = user;
 	}
 
 	public String getName() {
@@ -73,7 +86,5 @@ public class Board {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
-	
 
 }

@@ -40,4 +40,5 @@ public class BoardDto {
 	public void setUserDto(UserDto userDto) {
 		this.userDto = userDto;
 	}
+
 }

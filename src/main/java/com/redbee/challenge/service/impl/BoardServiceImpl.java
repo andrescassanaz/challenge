@@ -3,7 +3,6 @@ package com.redbee.challenge.service.impl;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -47,6 +46,8 @@ public class BoardServiceImpl implements BoardService {
 	@Autowired
 	MapperService mapperService;
 
+	private ObjectMapper mapper = new ObjectMapper();
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -55,12 +56,15 @@ public class BoardServiceImpl implements BoardService {
 	 * Board)
 	 */
 	@Override
-	public void save(Board board) {
-		boardRepository.save(board);
+	public Board save(String boardJson) throws JsonParseException, JsonMappingException, IOException {
 
+		BoardDto boardDto = this.mapper.readValue(boardJson, BoardDto.class);
+		User user = userService.findById(boardDto.getUserDto().getId());
+
+		Board board = new Board(boardDto.getName(), user);
+		Board savedBoard = boardRepository.save(board);
+		return savedBoard;
 	}
-
-	private ObjectMapper mapper = new ObjectMapper();
 
 	/*
 	 * (non-Javadoc)
@@ -145,4 +149,17 @@ public class BoardServiceImpl implements BoardService {
 		return boardsDto;
 
 	}
+
+	@Override
+	public Set<Board> findByLocations(Set<Location> locations) {
+		return boardRepository.findByLocations(locations);
+	}
+
+	@Override
+	public void delete(String boardJson) throws JsonParseException, JsonMappingException, IOException {
+		BoardDto boardDto = this.mapper.readValue(boardJson, BoardDto.class);
+		boardRepository.delete(this.findBoardById(boardDto.getId()));
+
+	}
+
 }
