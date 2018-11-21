@@ -28,6 +28,7 @@ import com.redbee.challenge.service.MapperService;
 import com.redbee.challenge.service.UserService;
 import com.redbee.challenge.service.WeatherPointService;
 import com.redbee.challenge.util.exception.BoardNotFoundException;
+import com.redbee.challenge.util.exception.CityNotFoundException;
 import com.redbee.challenge.util.exception.LocationNotFoundException;
 import com.redbee.challenge.util.yahoo.api.YahooRestClientService;
 import com.redbee.challenge.util.yahoo.api.data.Condition;
@@ -106,7 +107,7 @@ public class BoardServiceImpl implements BoardService {
 	 * String)
 	 */
 	@Override
-	public List<Condition> getActualWeatherByBoard(String boardJson) {
+	public List<Condition> getActualWeatherByBoard(String boardJson) throws CityNotFoundException {
 		List<Condition> conditions = new ArrayList<Condition>();
 		try {
 			BoardDto BoardDto = this.mapper.readValue(boardJson, BoardDto.class);
@@ -129,7 +130,7 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public List<BoardDto> getBoardsByUser(String userJson)
-			throws JsonParseException, JsonMappingException, IOException, ParseException {
+			throws JsonParseException, JsonMappingException, IOException, ParseException, CityNotFoundException {
 
 		UserDto userDto = this.mapper.readValue(userJson, UserDto.class);
 

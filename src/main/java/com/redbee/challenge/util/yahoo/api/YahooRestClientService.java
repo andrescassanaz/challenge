@@ -29,8 +29,9 @@ public class YahooRestClientService {
 	 *
 	 * @param woeid the woeid
 	 * @return the actual weather
+	 * @throws CityNotFoundException
 	 */
-	public YahooApiResponse getWeatherFromWoeid(long woeid) {
+	public YahooApiResponse getWeatherFromWoeid(long woeid) throws CityNotFoundException {
 
 		RestTemplate restTemplate = new RestTemplate();
 
@@ -53,6 +54,11 @@ public class YahooRestClientService {
 			yahooApiResponse = objectMapper.readValue(response.getBody(), YahooApiResponse.class);
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+
+		if (yahooApiResponse.getQuery().getResults() == null
+				|| yahooApiResponse.getQuery().getResults().getChannel().getLocation() == null) {
+			throw new CityNotFoundException();
 		}
 
 		return yahooApiResponse;
@@ -101,5 +107,5 @@ public class YahooRestClientService {
 		return woeid;
 
 	}
-	
+
 }

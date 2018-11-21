@@ -54,7 +54,7 @@ public class LocationController {
 		} catch (IOException e) {
 			restReponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: IOException");
 		} catch (CityNotFoundException e) {
-			restReponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: CityNotFoundException");
+			restReponse = new RestResponse(INTERNAL_SERVER_ERRROR, "City not found");
 		} catch (ParseException e) {
 			restReponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: ParseException");
 		}

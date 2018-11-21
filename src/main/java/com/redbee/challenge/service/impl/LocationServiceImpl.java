@@ -103,30 +103,24 @@ public class LocationServiceImpl implements LocationService {
 		Long woeid = yahooRestClientService.getWoeidFromCityName(locationDto.getCity());
 		YahooApiResponse yahooApiResponse = yahooRestClientService.getWeatherFromWoeid(woeid);
 
-		if (yahooApiResponse.getQuery().getResults() != null) {
+		Location location = buildLocation(woeid, yahooApiResponse);
 
-			Location location = buildLocation(woeid, yahooApiResponse);
+		Board board = boardService.findBoardById(locationDto.getBoardId());
 
-			Board board = boardService.findBoardById(locationDto.getBoardId());
+		Set<Location> locations = new HashSet<Location>();
+		locations.add(location);
+		Set<Board> boards = boardService.findByLocations(locations);
 
-			Set<Location> locations = new HashSet<Location>();
-			locations.add(location);
-			Set<Board> boards = boardService.findByLocations(locations);
+		boards.add(board);
+		location.setBoards(boards);
 
-			boards.add(board);
-			location.setBoards(boards);
+		Location savedLocation = this.save(location);
 
-			Location savedLocation = this.save(location);
+		WeatherPoint weatherPoint = weatherPointService.buildWeatherPoint(savedLocation, yahooApiResponse);
 
-			WeatherPoint weatherPoint = weatherPointService.buildWeatherPoint(savedLocation, yahooApiResponse);
+		weatherPointService.saveIfNecessary(weatherPoint);
 
-			weatherPointService.saveIfNecessary(weatherPoint);
-
-			restResponse = new RestResponse(HttpStatus.OK.value(), "Location saved!");
-
-		} else {
-			restResponse = new RestResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "No existe ciudad");
-		}
+		restResponse = new RestResponse(HttpStatus.OK.value(), "Location saved!");
 
 		return restResponse;
 
@@ -167,19 +161,21 @@ public class LocationServiceImpl implements LocationService {
 		String country = yahooApiResponse.getQuery().getResults().getChannel().getLocation().getCountry();
 		return new Location(woeid, city, country);
 	}
-	
+
 	@Override
-	public Location deleteLocationOfBoard(String locationJson) throws JsonParseException, JsonMappingException, IOException, BoardNotFoundException, LocationNotFoundException {
+	public Location deleteLocationOfBoard(String locationJson) throws JsonParseException, JsonMappingException,
+			IOException, BoardNotFoundException, LocationNotFoundException {
 		LocationDto locationDto = this.mapper.readValue(locationJson, LocationDto.class);
 		Location location = this.findById(locationDto.getWoeid());
 
-		Board boardToDelete = new Board();;
-		for(Board board: location.getBoards()) {
-			if(board.getId() == locationDto.getBoardId()) {
+		Board boardToDelete = new Board();
+		;
+		for (Board board : location.getBoards()) {
+			if (board.getId() == locationDto.getBoardId()) {
 				boardToDelete = board;
 			}
 		}
-		if(boardToDelete.getId() == null) {
+		if (boardToDelete.getId() == null) {
 			throw new BoardNotFoundException();
 		}
 		location.getBoards().remove(boardToDelete);

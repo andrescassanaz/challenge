@@ -12,6 +12,7 @@ import com.redbee.challenge.model.Board;
 import com.redbee.challenge.model.Location;
 import com.redbee.challenge.model.User;
 import com.redbee.challenge.util.exception.BoardNotFoundException;
+import com.redbee.challenge.util.exception.CityNotFoundException;
 import com.redbee.challenge.util.exception.LocationNotFoundException;
 import com.redbee.challenge.util.yahoo.api.data.Condition;
 
@@ -38,11 +39,12 @@ public interface BoardService {
 	 *
 	 * @param boardJson the board json
 	 * @return the actual weather by board
+	 * @throws CityNotFoundException
 	 */
-	public List<Condition> getActualWeatherByBoard(String boardJson);
+	public List<Condition> getActualWeatherByBoard(String boardJson) throws CityNotFoundException;
 
 	public List<BoardDto> getBoardsByUser(String userJson)
-			throws JsonParseException, JsonMappingException, IOException, ParseException;
+			throws JsonParseException, JsonMappingException, IOException, ParseException, CityNotFoundException;
 
 	public Board save(String boardJson) throws JsonParseException, JsonMappingException, IOException;
 
@@ -50,6 +52,7 @@ public interface BoardService {
 
 	public void delete(String boardJson) throws JsonParseException, JsonMappingException, IOException;
 
-	public List<BoardDto> getBoardsAndLocationsByUser(String userJson) throws JsonParseException, JsonMappingException, IOException;
+	public List<BoardDto> getBoardsAndLocationsByUser(String userJson)
+			throws JsonParseException, JsonMappingException, IOException;
 
 }

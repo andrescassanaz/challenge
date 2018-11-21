@@ -18,6 +18,7 @@ import com.redbee.challenge.dto.BoardDto;
 import com.redbee.challenge.service.BoardService;
 import com.redbee.challenge.util.QueryResult;
 import com.redbee.challenge.util.RestResponse;
+import com.redbee.challenge.util.exception.CityNotFoundException;
 import com.redbee.challenge.util.yahoo.api.data.Condition;
 
 @RestController
@@ -66,9 +67,10 @@ public class BoardController {
 	 *
 	 * @param userJson the user json
 	 * @return the boards by user
+	 * @throws CityNotFoundException 
 	 */
 	@PostMapping("/getBoardsByUserWithUpdatedWeather")
-	public QueryResult getBoardsByUser(@RequestBody String userJson) {
+	public QueryResult getBoardsByUser(@RequestBody String userJson) throws CityNotFoundException {
 		QueryResult queryResult;
 		try {
 			List<BoardDto> boardsByUser = boardService.getBoardsByUser(userJson);
@@ -110,9 +112,10 @@ public class BoardController {
 	 *
 	 * @param boardJson the board json
 	 * @return the actual weather by board
+	 * @throws CityNotFoundException 
 	 */
 	@PostMapping("/getActualWeatherByBoard")
-	public List<Condition> getActualWeatherByBoard(@RequestBody String boardJson) {
+	public List<Condition> getActualWeatherByBoard(@RequestBody String boardJson) throws CityNotFoundException {
 		List<Condition> conditions = boardService.getActualWeatherByBoard(boardJson);
 		return conditions;
 	}
