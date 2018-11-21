@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.redbee.challenge.dto.BoardDto;
 import com.redbee.challenge.dto.LocationDto;
 import com.redbee.challenge.model.Board;
 import com.redbee.challenge.model.Location;
@@ -22,7 +23,9 @@ import com.redbee.challenge.service.BoardService;
 import com.redbee.challenge.service.LocationService;
 import com.redbee.challenge.service.WeatherPointService;
 import com.redbee.challenge.util.RestResponse;
+import com.redbee.challenge.util.exception.BoardNotFoundException;
 import com.redbee.challenge.util.exception.CityNotFoundException;
+import com.redbee.challenge.util.exception.LocationNotFoundException;
 import com.redbee.challenge.util.yahoo.api.YahooRestClientService;
 import com.redbee.challenge.util.yahoo.api.data.YahooApiResponse;
 
@@ -163,6 +166,25 @@ public class LocationServiceImpl implements LocationService {
 		String city = yahooApiResponse.getQuery().getResults().getChannel().getLocation().getCity();
 		String country = yahooApiResponse.getQuery().getResults().getChannel().getLocation().getCountry();
 		return new Location(woeid, city, country);
+	}
+	
+	@Override
+	public Location deleteLocationOfBoard(String locationJson) throws JsonParseException, JsonMappingException, IOException, BoardNotFoundException, LocationNotFoundException {
+		LocationDto locationDto = this.mapper.readValue(locationJson, LocationDto.class);
+		Location location = this.findById(locationDto.getWoeid());
+
+		Board boardToDelete = new Board();;
+		for(Board board: location.getBoards()) {
+			if(board.getId() == locationDto.getBoardId()) {
+				boardToDelete = board;
+			}
+		}
+		if(boardToDelete.getId() == null) {
+			throw new BoardNotFoundException();
+		}
+		location.getBoards().remove(boardToDelete);
+		locationRepository.save(location);
+		return location;
 	}
 
 }

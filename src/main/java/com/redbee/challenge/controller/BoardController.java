@@ -4,12 +4,10 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,7 +44,7 @@ public class BoardController {
 		}
 		return restResponse;
 	}
-	
+
 	@PostMapping("/deleteBoard")
 	public RestResponse deleteBoard(@RequestBody String boardJson) {
 		RestResponse restResponse;
@@ -62,8 +60,14 @@ public class BoardController {
 		}
 		return restResponse;
 	}
-	
-	@PostMapping("/getBoardsByUser")
+
+	/**
+	 * Gets complete boards by user.
+	 *
+	 * @param userJson the user json
+	 * @return the boards by user
+	 */
+	@PostMapping("/getBoardsByUserWithUpdatedWeather")
 	public QueryResult getBoardsByUser(@RequestBody String userJson) {
 		QueryResult queryResult;
 		try {
@@ -82,8 +86,25 @@ public class BoardController {
 		}
 		return queryResult;
 	}
-	
-	
+
+	@PostMapping("/getBoardsByUser")
+	public QueryResult getBoardsAndLocationsByUser(@RequestBody String userJson) {
+		QueryResult queryResult;
+		try {
+			List<BoardDto> boardsByUser = boardService.getBoardsAndLocationsByUser(userJson);
+			RestResponse restResponse = new RestResponse(HttpStatus.OK.value(), "Ok");
+			queryResult = new QueryResult(restResponse, new ArrayList<Object>(boardsByUser));
+		} catch (JsonParseException e) {
+			queryResult = new QueryResult(new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: JsonParseException"));
+		} catch (JsonMappingException e) {
+			queryResult = new QueryResult(
+					new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: JsonMappingException"));
+		} catch (IOException e) {
+			queryResult = new QueryResult(new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: IOException"));
+		}
+		return queryResult;
+	}
+
 	/**
 	 * Gets the actual weather by board.
 	 *
@@ -95,4 +116,5 @@ public class BoardController {
 		List<Condition> conditions = boardService.getActualWeatherByBoard(boardJson);
 		return conditions;
 	}
+	
 }

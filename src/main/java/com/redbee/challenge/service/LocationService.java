@@ -7,7 +7,9 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.redbee.challenge.model.Location;
 import com.redbee.challenge.util.RestResponse;
+import com.redbee.challenge.util.exception.BoardNotFoundException;
 import com.redbee.challenge.util.exception.CityNotFoundException;
+import com.redbee.challenge.util.exception.LocationNotFoundException;
 
 public interface LocationService {
 
@@ -44,7 +46,7 @@ public interface LocationService {
 	 * @throws JsonParseException
 	 * @throws CityNotFoundException 
 	 * @throws ParseException 
-	 */
+	 */ 
 	public RestResponse addLocation(String locationJson) throws JsonParseException, JsonMappingException, IOException, CityNotFoundException, ParseException;
 
 	/**
@@ -58,5 +60,7 @@ public interface LocationService {
 	 */
 	public RestResponse deleteLocation(String locationJson)
 			throws JsonParseException, JsonMappingException, IOException;
+
+	public Location deleteLocationOfBoard(String boardJson) throws JsonParseException, JsonMappingException, IOException, BoardNotFoundException, LocationNotFoundException;
 
 }

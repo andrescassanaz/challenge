@@ -14,16 +14,21 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.redbee.challenge.dto.BoardDto;
+import com.redbee.challenge.dto.LocationDto;
 import com.redbee.challenge.dto.UserDto;
 import com.redbee.challenge.model.Board;
 import com.redbee.challenge.model.Location;
 import com.redbee.challenge.model.User;
 import com.redbee.challenge.model.WeatherPoint;
 import com.redbee.challenge.repository.BoardRepository;
+import com.redbee.challenge.repository.LocationRepository;
 import com.redbee.challenge.service.BoardService;
+import com.redbee.challenge.service.LocationService;
 import com.redbee.challenge.service.MapperService;
 import com.redbee.challenge.service.UserService;
 import com.redbee.challenge.service.WeatherPointService;
+import com.redbee.challenge.util.exception.BoardNotFoundException;
+import com.redbee.challenge.util.exception.LocationNotFoundException;
 import com.redbee.challenge.util.yahoo.api.YahooRestClientService;
 import com.redbee.challenge.util.yahoo.api.data.Condition;
 import com.redbee.challenge.util.yahoo.api.data.YahooApiResponse;
@@ -36,6 +41,9 @@ public class BoardServiceImpl implements BoardService {
 
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	LocationService locationService;
 
 	@Autowired
 	WeatherPointService weatherPointService;
@@ -74,11 +82,7 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public Board findBoardById(long id) {
 		Optional<Board> board = boardRepository.findById(id);
-		if (board.isPresent()) {
-			return board.get();
-		} else {
-			return null;
-		}
+		return board.get();
 
 	}
 
@@ -161,5 +165,26 @@ public class BoardServiceImpl implements BoardService {
 		boardRepository.delete(this.findBoardById(boardDto.getId()));
 
 	}
+
+	@Override
+	public List<BoardDto> getBoardsAndLocationsByUser(String userJson)
+			throws JsonParseException, JsonMappingException, IOException {
+
+		UserDto userDto = this.mapper.readValue(userJson, UserDto.class);
+
+		User user = userService.findById(userDto.getId());
+
+		Set<Board> boardsOfUser = boardRepository.findByUser(user);
+
+		List<BoardDto> boardsDto = new ArrayList<BoardDto>();
+		for (Board board : boardsOfUser) {
+			boardsDto.add(mapperService.mapBoardToDto(board));
+		}
+
+		return boardsDto;
+
+	}
+
+	
 
 }

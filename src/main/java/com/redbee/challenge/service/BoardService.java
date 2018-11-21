@@ -11,6 +11,8 @@ import com.redbee.challenge.dto.BoardDto;
 import com.redbee.challenge.model.Board;
 import com.redbee.challenge.model.Location;
 import com.redbee.challenge.model.User;
+import com.redbee.challenge.util.exception.BoardNotFoundException;
+import com.redbee.challenge.util.exception.LocationNotFoundException;
 import com.redbee.challenge.util.yahoo.api.data.Condition;
 
 public interface BoardService {
@@ -47,5 +49,7 @@ public interface BoardService {
 	public Set<Board> findByLocations(Set<Location> locations);
 
 	public void delete(String boardJson) throws JsonParseException, JsonMappingException, IOException;
+
+	public List<BoardDto> getBoardsAndLocationsByUser(String userJson) throws JsonParseException, JsonMappingException, IOException;
 
 }

@@ -1,6 +1,5 @@
 package com.redbee.challenge.model;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -8,7 +7,6 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -21,7 +19,7 @@ public class Location {
 
 	@Id
 	@Column
-	long woeid;
+	Long woeid;
 
 	@Column
 	String city;
@@ -35,7 +33,7 @@ public class Location {
 			@JoinColumn(name = "board_id") })
 	private Set<Board> boards = new HashSet<Board>();
 
-	@OneToMany(mappedBy = "location")
+	@OneToMany(mappedBy = "location", cascade=CascadeType.ALL)
 	private List<WeatherPoint> weatherPoints;
 
 	public Location() {
@@ -58,11 +56,11 @@ public class Location {
 		this.boards = boards;
 	}
 
-	public long getWoeid() {
+	public Long getWoeid() {
 		return woeid;
 	}
 
-	public void setWoeid(long woeid) {
+	public void setWoeid(Long woeid) {
 		this.woeid = woeid;
 	}
 

@@ -15,7 +15,9 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.redbee.challenge.service.LocationService;
 import com.redbee.challenge.service.WeatherPointService;
 import com.redbee.challenge.util.RestResponse;
+import com.redbee.challenge.util.exception.BoardNotFoundException;
 import com.redbee.challenge.util.exception.CityNotFoundException;
+import com.redbee.challenge.util.exception.LocationNotFoundException;
 import com.redbee.challenge.util.yahoo.api.YahooRestClientService;
 
 @RestController
@@ -80,6 +82,26 @@ public class LocationController {
 		}
 		return restReponse;
 
+	}
+	
+	@PostMapping("/deleteLocationOfBoard")
+	public RestResponse deleteLocationOfBoard(@RequestBody String boardJson) {
+		RestResponse restResponse;
+		try {
+			locationService.deleteLocationOfBoard(boardJson);
+			restResponse = new RestResponse(HttpStatus.OK.value(), "Ok");
+		} catch (JsonParseException e) {
+			restResponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: JsonParseException");
+		} catch (JsonMappingException e) {
+			restResponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: JsonMappingException");
+		} catch (IOException e) {
+			restResponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: IOException");
+		} catch (BoardNotFoundException e) {
+			restResponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: Board not found");
+		} catch (LocationNotFoundException e) {
+			restResponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: Location not found");
+		}
+		return restResponse;
 	}
 
 }
