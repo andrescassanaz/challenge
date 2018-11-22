@@ -3,6 +3,8 @@ package com.redbee.challenge.controller;
 import java.io.IOException;
 import java.text.ParseException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,6 +26,8 @@ import com.redbee.challenge.util.yahoo.api.YahooRestClientService;
 @CrossOrigin
 public class LocationController {
 
+	private static Logger LOGGER = LoggerFactory.getLogger(LocationController.class);
+
 	private static int INTERNAL_SERVER_ERRROR = HttpStatus.INTERNAL_SERVER_ERROR.value();
 
 	@Autowired
@@ -43,22 +47,27 @@ public class LocationController {
 	 */
 	@PostMapping("/addLocation")
 	public RestResponse addLocation(@RequestBody String locationJson) {
-		RestResponse restReponse;
+		RestResponse restResponse;
 		try {
 			locationService.addLocation(locationJson);
-			restReponse = new RestResponse(HttpStatus.OK.value(), "Ok");
+			restResponse = new RestResponse(HttpStatus.OK.value(), "Ok");
 		} catch (JsonParseException e) {
-			restReponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: JsonParseException");
+			restResponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: JsonParseException");
+			LOGGER.error(restResponse.getMessage());
 		} catch (JsonMappingException e) {
-			restReponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: JsonMappingException");
+			restResponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: JsonMappingException");
+			LOGGER.error(restResponse.getMessage());
 		} catch (IOException e) {
-			restReponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: IOException");
+			restResponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: IOException");
+			LOGGER.error(restResponse.getMessage());
 		} catch (CityNotFoundException e) {
-			restReponse = new RestResponse(INTERNAL_SERVER_ERRROR, "City not found");
+			restResponse = new RestResponse(INTERNAL_SERVER_ERRROR, "City not found");
+			LOGGER.error(restResponse.getMessage());
 		} catch (ParseException e) {
-			restReponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: ParseException");
+			restResponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: ParseException");
+			LOGGER.error(restResponse.getMessage());
 		}
-		return restReponse;
+		return restResponse;
 	}
 
 	/**
@@ -69,21 +78,24 @@ public class LocationController {
 	 */
 	@PostMapping("/deleteLocation")
 	public RestResponse delete(@RequestBody String locationJson) {
-		RestResponse restReponse;
+		RestResponse restResponse;
 		try {
 			locationService.deleteLocation(locationJson);
-			restReponse = new RestResponse(HttpStatus.OK.value(), "Ok");
+			restResponse = new RestResponse(HttpStatus.OK.value(), "Ok");
 		} catch (JsonParseException e) {
-			restReponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: JsonParseException");
+			restResponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: JsonParseException");
+			LOGGER.error(restResponse.getMessage());
 		} catch (JsonMappingException e) {
-			restReponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: JsonMappingException");
+			restResponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: JsonMappingException");
+			LOGGER.error(restResponse.getMessage());
 		} catch (IOException e) {
-			restReponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: IOException");
+			restResponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: IOException");
+			LOGGER.error(restResponse.getMessage());
 		}
-		return restReponse;
+		return restResponse;
 
 	}
-	
+
 	@PostMapping("/deleteLocationOfBoard")
 	public RestResponse deleteLocationOfBoard(@RequestBody String boardJson) {
 		RestResponse restResponse;
@@ -92,14 +104,19 @@ public class LocationController {
 			restResponse = new RestResponse(HttpStatus.OK.value(), "Ok");
 		} catch (JsonParseException e) {
 			restResponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: JsonParseException");
+			LOGGER.error(restResponse.getMessage());
 		} catch (JsonMappingException e) {
 			restResponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: JsonMappingException");
+			LOGGER.error(restResponse.getMessage());
 		} catch (IOException e) {
 			restResponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: IOException");
+			LOGGER.error(restResponse.getMessage());
 		} catch (BoardNotFoundException e) {
 			restResponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: Board not found");
+			LOGGER.error(restResponse.getMessage());
 		} catch (LocationNotFoundException e) {
 			restResponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: Location not found");
+			LOGGER.error(restResponse.getMessage());
 		}
 		return restResponse;
 	}
