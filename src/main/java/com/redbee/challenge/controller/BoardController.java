@@ -10,7 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +24,6 @@ import com.redbee.challenge.exception.CityNotFoundException;
 import com.redbee.challenge.service.BoardService;
 import com.redbee.challenge.util.QueryResult;
 import com.redbee.challenge.util.RestResponse;
-import com.redbee.challenge.util.yahoo.api.data.Condition;
 
 @RestController
 @CrossOrigin
@@ -34,7 +36,7 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 
-	@PostMapping("/addBoard")
+	@PutMapping("/boards/")
 	public RestResponse addBoard(@RequestBody String boardJson) {
 		RestResponse restResponse;
 		try {
@@ -53,11 +55,11 @@ public class BoardController {
 		return restResponse;
 	}
 
-	@PostMapping("/deleteBoard")
-	public RestResponse deleteBoard(@RequestBody String boardJson) {
+	@DeleteMapping("/boards/{boardId}")
+	public RestResponse deleteBoard(@PathVariable String boardId) {
 		RestResponse restResponse;
 		try {
-			boardService.delete(boardJson);
+			boardService.delete(boardId);
 			restResponse = new RestResponse(HttpStatus.OK.value(), "Ok");
 		} catch (JsonParseException e) {
 			restResponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: JsonParseException");
@@ -79,12 +81,13 @@ public class BoardController {
 	 * @return the boards by user
 	 * @throws CityNotFoundException
 	 */
-	@PostMapping("/getBoardsByUserWithUpdatedWeather")
-	public QueryResult getBoardsByUser(@RequestBody String userJson) throws CityNotFoundException {
-		LOGGER.info("Executing getBoardsByUserWithUpdatedWeather()");
+	@GetMapping("/boards/{userId}")
+	public QueryResult getBoardsByUser(@PathVariable String userId) throws CityNotFoundException {
+	
+		LOGGER.info("Executing getBoardsByUser()");
 		QueryResult queryResult;
 		try {
-			List<BoardDto> boardsByUser = boardService.getBoardsByUser(userJson);
+			List<BoardDto> boardsByUser = boardService.getBoardsByUser(userId);
 			RestResponse restResponse = new RestResponse(HttpStatus.OK.value(), "Ok");
 			queryResult = new QueryResult(restResponse, new ArrayList<Object>(boardsByUser));
 		} catch (JsonParseException e) {
@@ -104,38 +107,38 @@ public class BoardController {
 		return queryResult;
 	}
 
-	@PostMapping("/getBoardsByUser")
-	public QueryResult getBoardsAndLocationsByUser(@RequestBody String userJson) {
-		QueryResult queryResult;
-		try {
-			List<BoardDto> boardsByUser = boardService.getBoardsAndLocationsByUser(userJson);
-			RestResponse restResponse = new RestResponse(HttpStatus.OK.value(), "Ok");
-			queryResult = new QueryResult(restResponse, new ArrayList<Object>(boardsByUser));
-		} catch (JsonParseException e) {
-			queryResult = new QueryResult(new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: JsonParseException"));
-			LOGGER.error(queryResult.getRestResponse().getMessage());
-		} catch (JsonMappingException e) {
-			queryResult = new QueryResult(
-					new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: JsonMappingException"));
-			LOGGER.error(queryResult.getRestResponse().getMessage());
-		} catch (IOException e) {
-			queryResult = new QueryResult(new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: IOException"));
-			LOGGER.error(queryResult.getRestResponse().getMessage());
-		}
-		return queryResult;
-	}
+//	@PostMapping("/getBoardsByUser")
+//	public QueryResult getBoardsAndLocationsByUser(@RequestBody String userJson) {
+//		QueryResult queryResult;
+//		try {
+//			List<BoardDto> boardsByUser = boardService.getBoardsAndLocationsByUser(userJson);
+//			RestResponse restResponse = new RestResponse(HttpStatus.OK.value(), "Ok");
+//			queryResult = new QueryResult(restResponse, new ArrayList<Object>(boardsByUser));
+//		} catch (JsonParseException e) {
+//			queryResult = new QueryResult(new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: JsonParseException"));
+//			LOGGER.error(queryResult.getRestResponse().getMessage());
+//		} catch (JsonMappingException e) {
+//			queryResult = new QueryResult(
+//					new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: JsonMappingException"));
+//			LOGGER.error(queryResult.getRestResponse().getMessage());
+//		} catch (IOException e) {
+//			queryResult = new QueryResult(new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: IOException"));
+//			LOGGER.error(queryResult.getRestResponse().getMessage());
+//		}
+//		return queryResult;
+//	}
 
-	/**
-	 * Gets the actual weather by board.
-	 *
-	 * @param boardJson the board json
-	 * @return the actual weather by board
-	 * @throws CityNotFoundException
-	 */
-	@PostMapping("/getActualWeatherByBoard")
-	public List<Condition> getActualWeatherByBoard(@RequestBody String boardJson) throws CityNotFoundException {
-		List<Condition> conditions = boardService.getActualWeatherByBoard(boardJson);
-		return conditions;
-	}
+//	/**
+//	 * Gets the actual weather by board.
+//	 *
+//	 * @param boardJson the board json
+//	 * @return the actual weather by board
+//	 * @throws CityNotFoundException
+//	 */
+//	@PostMapping("/getActualWeatherByBoard")
+//	public List<Condition> getActualWeatherByBoard(@RequestBody String boardJson) throws CityNotFoundException {
+//		List<Condition> conditions = boardService.getActualWeatherByBoard(boardJson);
+//		return conditions;
+//	}
 
 }

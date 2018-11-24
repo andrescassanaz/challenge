@@ -34,11 +34,6 @@ public class MapperServiceImpl implements MapperService {
 		LocationDto dto = new LocationDto();
 		dto.setCity(location.getCity());
 		dto.setCountry(location.getCountry());
-		List<WeatherPointDto> listWeatherPoint = new ArrayList<WeatherPointDto>();
-		for (WeatherPoint weatherPoint : location.getWeatherPoints()) {
-			listWeatherPoint.add(mapWeatherPointToDto(weatherPoint));
-		}
-		dto.setWeatherPoints(listWeatherPoint);
 		dto.setWoeid(location.getWoeid());
 		return dto;
 
@@ -58,11 +53,6 @@ public class MapperServiceImpl implements MapperService {
 		dto.setId(board.getId());
 		dto.setName(board.getName());
 		dto.setUserDto(mapUserToDto(board.getUser()));
-		List<LocationDto> locationsDto = new ArrayList<LocationDto>();
-		for (Location location : board.getLocations()) {
-			locationsDto.add(mapLocationToDto(location));
-		}
-		dto.setLocations(locationsDto);
 		return dto;
 	}
 

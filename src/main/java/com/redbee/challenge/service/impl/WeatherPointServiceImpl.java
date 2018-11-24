@@ -1,15 +1,21 @@
 package com.redbee.challenge.service.impl;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.redbee.challenge.dto.WeatherPointDto;
 import com.redbee.challenge.exception.CityNotFoundException;
 import com.redbee.challenge.model.Location;
 import com.redbee.challenge.model.WeatherPoint;
 import com.redbee.challenge.repository.WeatherPointRepository;
+import com.redbee.challenge.service.LocationService;
+import com.redbee.challenge.service.MapperService;
 import com.redbee.challenge.service.WeatherPointService;
 import com.redbee.challenge.util.Utils;
 import com.redbee.challenge.util.yahoo.api.YahooRestClientService;
@@ -23,9 +29,15 @@ public class WeatherPointServiceImpl implements WeatherPointService {
 
 	@Autowired
 	Utils utils;
-	
+
 	@Autowired
 	YahooRestClientService yahooRestClientService;
+
+	@Autowired
+	LocationService locationService;
+
+	@Autowired
+	MapperService mapperService;
 
 	@Override
 	public WeatherPoint save(WeatherPoint weatherPoint) {
@@ -65,8 +77,7 @@ public class WeatherPointServiceImpl implements WeatherPointService {
 
 		WeatherPoint WeatherPointToReturn = null;
 
-		WeatherPoint weatherPointDB = this.findByLocationAndDate(weatherPoint.getLocation(),
-				weatherPoint.getDate());
+		WeatherPoint weatherPointDB = this.findByLocationAndDate(weatherPoint.getLocation(), weatherPoint.getDate());
 
 		if (weatherPointDB == null) {
 			WeatherPointToReturn = this.save(weatherPoint);
@@ -74,13 +85,24 @@ public class WeatherPointServiceImpl implements WeatherPointService {
 		return WeatherPointToReturn;
 
 	}
-	
+
 	public WeatherPoint updateWeatherPointOfLocation(Location location) throws ParseException, CityNotFoundException {
 		YahooApiResponse weatherResponse = yahooRestClientService.getWeatherFromWoeid(location.getWoeid());
 		WeatherPoint weatherPoint = this.buildWeatherPoint(location, weatherResponse);
 		System.out.println("Intentando guardar:" + location.getCity());
 		this.saveIfNecessary(weatherPoint);
 		return weatherPoint;
+	}
+
+	@Override
+	public List<WeatherPointDto> getWeatherPointByLocation(String woeid) {
+		Location location = locationService.findById(Long.parseLong(woeid));
+		Set<WeatherPoint> weatherPointsDb = weatherPointRepository.findByLocation(location);
+		List<WeatherPointDto> weatherPointsDto = new ArrayList<WeatherPointDto>();
+		for (WeatherPoint weatherPoint : weatherPointsDb) {
+			weatherPointsDto.add(mapperService.mapWeatherPointToDto(weatherPoint));
+		}
+		return weatherPointsDto;
 	}
 
 }

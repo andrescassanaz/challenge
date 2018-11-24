@@ -2,6 +2,7 @@ package com.redbee.challenge.service.impl;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -21,10 +22,12 @@ import com.redbee.challenge.exception.CityNotFoundException;
 import com.redbee.challenge.exception.LocationNotFoundException;
 import com.redbee.challenge.model.Board;
 import com.redbee.challenge.model.Location;
+import com.redbee.challenge.model.User;
 import com.redbee.challenge.model.WeatherPoint;
 import com.redbee.challenge.repository.LocationRepository;
 import com.redbee.challenge.service.BoardService;
 import com.redbee.challenge.service.LocationService;
+import com.redbee.challenge.service.MapperService;
 import com.redbee.challenge.service.WeatherPointService;
 import com.redbee.challenge.util.RestResponse;
 import com.redbee.challenge.util.yahoo.api.YahooRestClientService;
@@ -44,6 +47,9 @@ public class LocationServiceImpl implements LocationService {
 
 	@Autowired
 	WeatherPointService weatherPointService;
+	
+	@Autowired
+	MapperService mapperService;
 
 	private ObjectMapper mapper = new ObjectMapper();
 
@@ -59,18 +65,6 @@ public class LocationServiceImpl implements LocationService {
 		return locationRepository.save(location);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.redbee.challenge.service.LocationService#delete(com.redbee.challenge.
-	 * model.Location)
-	 */
-	@Override
-	public void delete(Location location) {
-		locationRepository.delete(location);
-
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -127,29 +121,6 @@ public class LocationServiceImpl implements LocationService {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.redbee.challenge.service.LocationService#deleteLocation(java.lang.String)
-	 */
-	@Override
-	public RestResponse deleteLocation(String locationJson)
-			throws JsonParseException, JsonMappingException, IOException {
-		RestResponse restResponse;
-
-		LocationDto locationDto = this.mapper.readValue(locationJson, LocationDto.class);
-		Location location = this.findById(locationDto.getWoeid());
-		if (location != null) {
-			this.delete(location);
-			restResponse = new RestResponse(HttpStatus.OK.value(), "Location Deleted!");
-		} else {
-			restResponse = new RestResponse(HttpStatus.CONFLICT.value(), "Nonexistent location!");
-		}
-
-		return restResponse;
-	}
-
 	/**
 	 * Builds the location.
 	 *
@@ -164,15 +135,14 @@ public class LocationServiceImpl implements LocationService {
 	}
 
 	@Override
-	public Location deleteLocationOfBoard(String locationJson) throws JsonParseException, JsonMappingException,
+	public Location deleteLocationOfBoard(String boardId,String woeid) throws JsonParseException, JsonMappingException,
 			IOException, BoardNotFoundException, LocationNotFoundException {
-		LocationDto locationDto = this.mapper.readValue(locationJson, LocationDto.class);
-		Location location = this.findById(locationDto.getWoeid());
+		Location location = this.findById(Long.parseLong(woeid));
 
 		Board boardToDelete = new Board();
 		;
 		for (Board board : location.getBoards()) {
-			if (board.getId() == locationDto.getBoardId()) {
+			if (board.getId() == Long.parseLong(boardId)) {
 				boardToDelete = board;
 			}
 		}
@@ -189,6 +159,24 @@ public class LocationServiceImpl implements LocationService {
 		return locationRepository.findAll();
 	}
 
+	@Override
+	public List<LocationDto> getLocationsByBoard(String boardId) {
+
+		Board board = boardService.findBoardById(Long.parseLong(boardId));
+		Set<Board> boards = new HashSet<Board>();
+		boards.add(board);
+		Set<Location> locationsDb = locationRepository.findByBoards(boards);
+		List<LocationDto> locationsDto = new ArrayList<LocationDto>();
+		for (Location location : locationsDb) {
+			LocationDto locationDto = mapperService.mapLocationToDto(location);
+			locationsDto.add(locationDto);
+		}
+		return locationsDto;
 		
+		
+		
+	}
+
+
 
 }

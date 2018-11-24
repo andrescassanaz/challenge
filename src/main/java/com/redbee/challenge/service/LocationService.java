@@ -3,9 +3,11 @@ package com.redbee.challenge.service;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.redbee.challenge.dto.LocationDto;
 import com.redbee.challenge.exception.BoardNotFoundException;
 import com.redbee.challenge.exception.CityNotFoundException;
 import com.redbee.challenge.exception.LocationNotFoundException;
@@ -21,13 +23,6 @@ public interface LocationService {
 	 * @return the saved location
 	 */
 	public Location save(Location location);
-
-	/**
-	 * Delete.
-	 *
-	 * @param location the location
-	 */
-	public void delete(Location location);
 
 	/**
 	 * Find by id.
@@ -59,12 +54,12 @@ public interface LocationService {
 	 * @throws JsonMappingException
 	 * @throws JsonParseException
 	 */
-	public RestResponse deleteLocation(String locationJson)
-			throws JsonParseException, JsonMappingException, IOException;
 
-	public Location deleteLocationOfBoard(String boardJson) throws JsonParseException, JsonMappingException, IOException, BoardNotFoundException, LocationNotFoundException;
+	public Location deleteLocationOfBoard(String boardId,String  woeid) throws JsonParseException, JsonMappingException, IOException, BoardNotFoundException, LocationNotFoundException;
 	
 	public List<Location> findAll();
+
+	public List<LocationDto> getLocationsByBoard(String boardId);
 	
 
 }

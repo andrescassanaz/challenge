@@ -41,18 +41,15 @@ public interface BoardService {
 	 * @return the actual weather by board
 	 * @throws CityNotFoundException
 	 */
-	public List<Condition> getActualWeatherByBoard(String boardJson) throws CityNotFoundException;
 
-	public List<BoardDto> getBoardsByUser(String userJson)
+	public List<BoardDto> getBoardsByUser(String userId)
 			throws JsonParseException, JsonMappingException, IOException, ParseException, CityNotFoundException;
 
 	public Board save(String boardJson) throws JsonParseException, JsonMappingException, IOException;
 
 	public Set<Board> findByLocations(Set<Location> locations);
 
-	public void delete(String boardJson) throws JsonParseException, JsonMappingException, IOException;
+	public void delete(String boardId) throws JsonParseException, JsonMappingException, IOException;
 
-	public List<BoardDto> getBoardsAndLocationsByUser(String userJson)
-			throws JsonParseException, JsonMappingException, IOException;
 
 }

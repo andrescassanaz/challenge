@@ -57,13 +57,6 @@ public class BoardServiceImpl implements BoardService {
 
 	private ObjectMapper mapper = new ObjectMapper();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.redbee.challenge.service.BoardService#save(com.redbee.challenge.model.
-	 * Board)
-	 */
 	@Override
 	public Board save(String boardJson) throws JsonParseException, JsonMappingException, IOException {
 
@@ -75,11 +68,6 @@ public class BoardServiceImpl implements BoardService {
 		return savedBoard;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.redbee.challenge.service.BoardService#findBoardById(long)
-	 */
 	@Override
 	public Board findBoardById(long id) {
 		Optional<Board> board = boardRepository.findById(id);
@@ -87,68 +75,23 @@ public class BoardServiceImpl implements BoardService {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.redbee.challenge.service.BoardService#findByUser(com.redbee.challenge.
-	 * model.User)
-	 */
 	@Override
 	public Set<Board> findByUser(User user) {
 		return boardRepository.findByUser(user);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.redbee.challenge.service.BoardService#getActualWeatherByBoard(java.lang.
-	 * String)
-	 */
-	@Override
-	public List<Condition> getActualWeatherByBoard(String boardJson) throws CityNotFoundException {
-		List<Condition> conditions = new ArrayList<Condition>();
-		try {
-			BoardDto BoardDto = this.mapper.readValue(boardJson, BoardDto.class);
-			Board board = this.findBoardById(BoardDto.getId());
-			if (board != null) {
-				Set<Location> locations = board.getLocations();
-				for (Location location : locations) {
-					YahooApiResponse yahooApiResponse = yahooRestClientService.getWeatherFromWoeid(location.getWoeid());
-					Condition condition = yahooApiResponse.getQuery().getResults().getChannel().getItem()
-							.getCondition();
-					conditions.add(condition);
-				}
-			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return conditions;
-	}
 
 	@Override
-	public List<BoardDto> getBoardsByUser(String userJson)
+	public List<BoardDto> getBoardsByUser(String userId)
 			throws JsonParseException, JsonMappingException, IOException, ParseException, CityNotFoundException {
 
-		UserDto userDto = this.mapper.readValue(userJson, UserDto.class);
-
-		User user = userService.findById(userDto.getId());
+		User user = userService.findById(Long.parseLong(userId));
 
 		Set<Board> boardsOfUser = boardRepository.findByUser(user);
 
 		List<BoardDto> boardsDto = new ArrayList<BoardDto>();
 		for (Board board : boardsOfUser) {
 			boardsDto.add(mapperService.mapBoardToDto(board));
-			for (Location location : board.getLocations()) {
-				YahooApiResponse weatherResponse = yahooRestClientService.getWeatherFromWoeid(location.getWoeid());
-				WeatherPoint weatherPoint = weatherPointService.buildWeatherPoint(location, weatherResponse);
-				weatherPointService.saveIfNecessary(weatherPoint);
-				List<WeatherPoint> weatherPoints = new ArrayList<WeatherPoint>();
-				weatherPoints.add(weatherPoint);
-				location.setWeatherPoints(weatherPoints);
-			}
 		}
 
 		return boardsDto;
@@ -161,30 +104,12 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public void delete(String boardJson) throws JsonParseException, JsonMappingException, IOException {
-		BoardDto boardDto = this.mapper.readValue(boardJson, BoardDto.class);
-		boardRepository.delete(this.findBoardById(boardDto.getId()));
-
+	public void delete(String boardId) throws JsonParseException, JsonMappingException, IOException {
+		boardRepository.delete(this.findBoardById(Long.parseLong(boardId)));
 	}
 
-	@Override
-	public List<BoardDto> getBoardsAndLocationsByUser(String userJson)
-			throws JsonParseException, JsonMappingException, IOException {
 
-		UserDto userDto = this.mapper.readValue(userJson, UserDto.class);
-
-		User user = userService.findById(userDto.getId());
-
-		Set<Board> boardsOfUser = boardRepository.findByUser(user);
-
-		List<BoardDto> boardsDto = new ArrayList<BoardDto>();
-		for (Board board : boardsOfUser) {
-			boardsDto.add(mapperService.mapBoardToDto(board));
-		}
-
-		return boardsDto;
-
-	}
+	
 
 	
 

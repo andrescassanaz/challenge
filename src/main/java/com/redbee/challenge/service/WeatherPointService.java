@@ -1,7 +1,9 @@
 package com.redbee.challenge.service;
 
 import java.text.ParseException;
+import java.util.List;
 
+import com.redbee.challenge.dto.WeatherPointDto;
 import com.redbee.challenge.exception.CityNotFoundException;
 import com.redbee.challenge.model.Location;
 import com.redbee.challenge.model.WeatherPoint;
@@ -31,6 +33,8 @@ public interface WeatherPointService {
 	public WeatherPoint saveIfNecessary(WeatherPoint weatherPoint);
 	
 	public WeatherPoint updateWeatherPointOfLocation(Location location) throws ParseException, CityNotFoundException;
+
+	public List<WeatherPointDto> getWeatherPointByLocation(String woeid);
 	
 	
 	

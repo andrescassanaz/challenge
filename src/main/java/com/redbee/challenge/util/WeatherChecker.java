@@ -25,7 +25,7 @@ public class WeatherChecker {
 	@Autowired
 	WeatherCheckerService weatherCheckerService;
 
-	@EventListener(ApplicationReadyEvent.class)
+	//@EventListener(ApplicationReadyEvent.class)
 	public void doSomethingAfterStartup() {
 		System.out.println("hello world, I have just started up");
 	}
