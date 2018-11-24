@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.redbee.challenge.dto.WeatherPointDto;
+import com.redbee.challenge.model.WeatherPoint;
 import com.redbee.challenge.service.WeatherPointService;
 import com.redbee.challenge.util.QueryResult;
 import com.redbee.challenge.util.RestResponse;
@@ -27,11 +28,19 @@ public class WeatherPointController {
 	WeatherPointService weatherPointService;
 	
 	
+//	@GetMapping("/weatherpoints/{woeid}")
+//	public QueryResult getWeatherPointsByLocation(@PathVariable String woeid) {
+//		List<WeatherPointDto> weatherpointsByBoard = weatherPointService.getWeatherPointByLocation(woeid);
+//		RestResponse restResponse = new RestResponse(HttpStatus.OK.value(), "Ok");
+//		return new QueryResult(restResponse, new ArrayList<Object>(weatherpointsByBoard));
+//	}
 	@GetMapping("/weatherpoints/{woeid}")
 	public QueryResult getWeatherPointsByLocation(@PathVariable String woeid) {
-		List<WeatherPointDto> weatherpointsByBoard = weatherPointService.getWeatherPointByLocation(woeid);
+		WeatherPointDto lastWeatherPoint = weatherPointService.getLastWeatherPointByLocation(woeid);
+		List<WeatherPointDto> weatherPoints  = new ArrayList<WeatherPointDto>();
+		weatherPoints.add(lastWeatherPoint);
 		RestResponse restResponse = new RestResponse(HttpStatus.OK.value(), "Ok");
-		return new QueryResult(restResponse, new ArrayList<Object>(weatherpointsByBoard));
+		return new QueryResult(restResponse, new ArrayList<Object>(weatherPoints));
 	}
 
 }

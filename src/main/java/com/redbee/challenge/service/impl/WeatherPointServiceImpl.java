@@ -105,4 +105,11 @@ public class WeatherPointServiceImpl implements WeatherPointService {
 		return weatherPointsDto;
 	}
 
+	@Override
+	public WeatherPointDto getLastWeatherPointByLocation(String woeid) {
+		Location location = locationService.findById(Long.parseLong(woeid));
+		WeatherPoint lastWeatherPoint = weatherPointRepository.findFirstByLocationOrderByDateDesc(location);
+		return mapperService.mapWeatherPointToDto(lastWeatherPoint);
+	}
+
 }
