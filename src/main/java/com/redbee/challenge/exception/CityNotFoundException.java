@@ -1,4 +1,4 @@
-package com.redbee.challenge.util.exception;
+package com.redbee.challenge.exception;
 
 public class CityNotFoundException extends Exception {
 

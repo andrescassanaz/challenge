@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.redbee.challenge.util.exception.CityNotFoundException;
+import com.redbee.challenge.exception.CityNotFoundException;
 import com.redbee.challenge.util.yahoo.api.data.YahooApiResponse;
 
 /**

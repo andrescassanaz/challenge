@@ -8,12 +8,12 @@ import java.util.Set;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.redbee.challenge.dto.BoardDto;
+import com.redbee.challenge.exception.BoardNotFoundException;
+import com.redbee.challenge.exception.CityNotFoundException;
+import com.redbee.challenge.exception.LocationNotFoundException;
 import com.redbee.challenge.model.Board;
 import com.redbee.challenge.model.Location;
 import com.redbee.challenge.model.User;
-import com.redbee.challenge.util.exception.BoardNotFoundException;
-import com.redbee.challenge.util.exception.CityNotFoundException;
-import com.redbee.challenge.util.exception.LocationNotFoundException;
 import com.redbee.challenge.util.yahoo.api.data.Condition;
 
 public interface BoardService {

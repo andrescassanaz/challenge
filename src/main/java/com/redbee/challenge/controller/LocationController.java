@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.redbee.challenge.exception.BoardNotFoundException;
+import com.redbee.challenge.exception.CityNotFoundException;
+import com.redbee.challenge.exception.LocationNotFoundException;
 import com.redbee.challenge.service.LocationService;
 import com.redbee.challenge.service.WeatherPointService;
 import com.redbee.challenge.util.RestResponse;
-import com.redbee.challenge.util.exception.BoardNotFoundException;
-import com.redbee.challenge.util.exception.CityNotFoundException;
-import com.redbee.challenge.util.exception.LocationNotFoundException;
 import com.redbee.challenge.util.yahoo.api.YahooRestClientService;
 
 @RestController

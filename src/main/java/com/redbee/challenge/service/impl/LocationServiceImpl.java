@@ -3,6 +3,7 @@ package com.redbee.challenge.service.impl;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -15,6 +16,9 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.redbee.challenge.dto.BoardDto;
 import com.redbee.challenge.dto.LocationDto;
+import com.redbee.challenge.exception.BoardNotFoundException;
+import com.redbee.challenge.exception.CityNotFoundException;
+import com.redbee.challenge.exception.LocationNotFoundException;
 import com.redbee.challenge.model.Board;
 import com.redbee.challenge.model.Location;
 import com.redbee.challenge.model.WeatherPoint;
@@ -23,9 +27,6 @@ import com.redbee.challenge.service.BoardService;
 import com.redbee.challenge.service.LocationService;
 import com.redbee.challenge.service.WeatherPointService;
 import com.redbee.challenge.util.RestResponse;
-import com.redbee.challenge.util.exception.BoardNotFoundException;
-import com.redbee.challenge.util.exception.CityNotFoundException;
-import com.redbee.challenge.util.exception.LocationNotFoundException;
 import com.redbee.challenge.util.yahoo.api.YahooRestClientService;
 import com.redbee.challenge.util.yahoo.api.data.YahooApiResponse;
 
@@ -182,5 +183,12 @@ public class LocationServiceImpl implements LocationService {
 		locationRepository.save(location);
 		return location;
 	}
+
+	@Override
+	public List<Location> findAll() {
+		return locationRepository.findAll();
+	}
+
+		
 
 }

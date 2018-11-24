@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.redbee.challenge.dto.BoardDto;
+import com.redbee.challenge.exception.CityNotFoundException;
 import com.redbee.challenge.service.BoardService;
 import com.redbee.challenge.util.QueryResult;
 import com.redbee.challenge.util.RestResponse;
-import com.redbee.challenge.util.exception.CityNotFoundException;
 import com.redbee.challenge.util.yahoo.api.data.Condition;
 
 @RestController

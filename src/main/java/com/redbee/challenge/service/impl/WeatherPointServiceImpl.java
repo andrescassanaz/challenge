@@ -6,11 +6,13 @@ import java.util.Calendar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.redbee.challenge.exception.CityNotFoundException;
 import com.redbee.challenge.model.Location;
 import com.redbee.challenge.model.WeatherPoint;
 import com.redbee.challenge.repository.WeatherPointRepository;
 import com.redbee.challenge.service.WeatherPointService;
 import com.redbee.challenge.util.Utils;
+import com.redbee.challenge.util.yahoo.api.YahooRestClientService;
 import com.redbee.challenge.util.yahoo.api.data.YahooApiResponse;
 
 @Service
@@ -21,6 +23,9 @@ public class WeatherPointServiceImpl implements WeatherPointService {
 
 	@Autowired
 	Utils utils;
+	
+	@Autowired
+	YahooRestClientService yahooRestClientService;
 
 	@Override
 	public WeatherPoint save(WeatherPoint weatherPoint) {
@@ -68,6 +73,14 @@ public class WeatherPointServiceImpl implements WeatherPointService {
 		}
 		return WeatherPointToReturn;
 
+	}
+	
+	public WeatherPoint updateWeatherPointOfLocation(Location location) throws ParseException, CityNotFoundException {
+		YahooApiResponse weatherResponse = yahooRestClientService.getWeatherFromWoeid(location.getWoeid());
+		WeatherPoint weatherPoint = this.buildWeatherPoint(location, weatherResponse);
+		System.out.println("Intentando guardar:" + location.getCity());
+		this.saveIfNecessary(weatherPoint);
+		return weatherPoint;
 	}
 
 }
