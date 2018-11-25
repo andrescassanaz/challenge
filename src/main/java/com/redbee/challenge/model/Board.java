@@ -39,7 +39,7 @@ public class Board {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "id_user")
+	@JoinColumn(name = "username")
 	private User user;
 
 	public Board() {

@@ -61,7 +61,7 @@ public class BoardServiceImpl implements BoardService {
 	public Board save(String boardJson) throws JsonParseException, JsonMappingException, IOException {
 
 		BoardDto boardDto = this.mapper.readValue(boardJson, BoardDto.class);
-		User user = userService.findById(boardDto.getUserDto().getId());
+		User user = userService.findByUsername(boardDto.getUserDto().getUsername());
 
 		Board board = new Board(boardDto.getName(), user);
 		Board savedBoard = boardRepository.save(board);
@@ -82,10 +82,10 @@ public class BoardServiceImpl implements BoardService {
 
 
 	@Override
-	public List<BoardDto> getBoardsByUser(String userId)
+	public List<BoardDto> getBoardsByUser(String username)
 			throws JsonParseException, JsonMappingException, IOException, ParseException, CityNotFoundException {
 
-		User user = userService.findById(Long.parseLong(userId));
+		User user = userService.findByUsername(username);
 
 		Set<Board> boardsOfUser = boardRepository.findByUser(user);
 

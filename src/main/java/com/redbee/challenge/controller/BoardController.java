@@ -81,13 +81,13 @@ public class BoardController {
 	 * @return the boards by user
 	 * @throws CityNotFoundException
 	 */
-	@GetMapping("/boards/{userId}")
-	public QueryResult getBoardsByUser(@PathVariable String userId) throws CityNotFoundException {
+	@GetMapping("/boards/{username}")
+	public QueryResult getBoardsByUser(@PathVariable String username) throws CityNotFoundException {
 	
 		LOGGER.info("Executing getBoardsByUser()");
 		QueryResult queryResult;
 		try {
-			List<BoardDto> boardsByUser = boardService.getBoardsByUser(userId);
+			List<BoardDto> boardsByUser = boardService.getBoardsByUser(username);
 			RestResponse restResponse = new RestResponse(HttpStatus.OK.value(), "Ok");
 			queryResult = new QueryResult(restResponse, new ArrayList<Object>(boardsByUser));
 		} catch (JsonParseException e) {

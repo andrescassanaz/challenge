@@ -10,4 +10,7 @@ import com.redbee.challenge.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Serializable>{
 
+	public User findByUsername(String username);
+	
+	
 }

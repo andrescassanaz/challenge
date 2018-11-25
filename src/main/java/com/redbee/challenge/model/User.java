@@ -1,23 +1,20 @@
 package com.redbee.challenge.model;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
 public class User {
 
-	@Column
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-
-	@Column
+	@Column(unique = true, nullable = false, length = 45)
 	private String username;
 
 	@Column
@@ -25,15 +22,33 @@ public class User {
 
 	@OneToMany(mappedBy = "user")
 	private List<Board> boards;
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+	private Set<UserRole> userRole = new HashSet<UserRole>();
+	
+	private String type;
+	
+	private String token;
+	
+	
 
-	public long getId() {
-		return id;
+	public User() {	}
+	
+
+	public User(String username, String password, boolean enabled) {
+		this.username = username;
+		this.password = password;
 	}
 
-	public void setId(long id) {
-		this.id = id;
+
+
+	public User(String username, String password, Set<UserRole> userRole, boolean enabled) {
+		this.username = username;
+		this.password = password;
+		this.userRole = userRole;
 	}
 
+	
 	public String getUsername() {
 		return username;
 	}
@@ -49,5 +64,32 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public Set<UserRole> getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(Set<UserRole> userRole) {
+		this.userRole = userRole;
+	}
+
+	
+	
 
 }

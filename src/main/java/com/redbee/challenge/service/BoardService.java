@@ -42,7 +42,7 @@ public interface BoardService {
 	 * @throws CityNotFoundException
 	 */
 
-	public List<BoardDto> getBoardsByUser(String userId)
+	public List<BoardDto> getBoardsByUser(String username)
 			throws JsonParseException, JsonMappingException, IOException, ParseException, CityNotFoundException;
 
 	public Board save(String boardJson) throws JsonParseException, JsonMappingException, IOException;

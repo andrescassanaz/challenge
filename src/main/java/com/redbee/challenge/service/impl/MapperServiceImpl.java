@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 import com.redbee.challenge.dto.BoardDto;
 import com.redbee.challenge.dto.LocationDto;
 import com.redbee.challenge.dto.UserDto;
+import com.redbee.challenge.dto.UserRoleDto;
 import com.redbee.challenge.dto.WeatherPointDto;
 import com.redbee.challenge.model.Board;
 import com.redbee.challenge.model.Location;
 import com.redbee.challenge.model.User;
+import com.redbee.challenge.model.UserRole;
 import com.redbee.challenge.model.WeatherPoint;
 import com.redbee.challenge.service.MapperService;
 
@@ -42,8 +44,17 @@ public class MapperServiceImpl implements MapperService {
 	@Override
 	public UserDto mapUserToDto(User user) {
 		UserDto dto = new UserDto();
-		dto.setId(user.getId());
-		dto.setName(user.getUsername());
+		dto.setUsername(user.getUsername());
+		dto.setUsername(user.getUsername());
+		dto.setToken(user.getToken());
+		dto.setType(user.getType());
+		List<UserRoleDto> userRoles = new ArrayList<UserRoleDto>();
+		for (UserRole userRole : user.getUserRole()) {
+			userRoles.add(mapUserRoleToDto(userRole));
+		}
+		dto.setUserRol(userRoles);
+		
+		
 		return dto;
 	}
 
@@ -54,6 +65,11 @@ public class MapperServiceImpl implements MapperService {
 		dto.setName(board.getName());
 		dto.setUserDto(mapUserToDto(board.getUser()));
 		return dto;
+	}
+
+	@Override
+	public UserRoleDto mapUserRoleToDto(UserRole userRole) {
+		return new UserRoleDto(userRole.getId(), userRole.getRole());
 	}
 
 }

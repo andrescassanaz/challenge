@@ -12,12 +12,7 @@ public interface UserService {
 	 */
 	public User save(User user);
 	
-	/**
-	 * Find by id.
-	 *
-	 * @param id the id
-	 * @return the saved user
-	 */
-	public User findById(long id);
+
+	public User findByUsername(String username);
 
 }
