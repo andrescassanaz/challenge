@@ -16,7 +16,6 @@ import com.redbee.challenge.util.QueryResult;
 import com.redbee.challenge.util.RestResponse;
 
 @RestController
-@CrossOrigin
 public class UserController {
 
 	@Autowired

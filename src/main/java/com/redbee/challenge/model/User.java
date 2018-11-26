@@ -23,9 +23,6 @@ public class User {
 	@OneToMany(mappedBy = "user")
 	private List<Board> boards;
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
-	private Set<UserRole> userRole = new HashSet<UserRole>();
-	
 	private String type;
 	
 	private String token;
@@ -38,14 +35,6 @@ public class User {
 	public User(String username, String password, boolean enabled) {
 		this.username = username;
 		this.password = password;
-	}
-
-
-
-	public User(String username, String password, Set<UserRole> userRole, boolean enabled) {
-		this.username = username;
-		this.password = password;
-		this.userRole = userRole;
 	}
 
 	
@@ -81,13 +70,6 @@ public class User {
 		this.token = token;
 	}
 
-	public Set<UserRole> getUserRole() {
-		return userRole;
-	}
-
-	public void setUserRole(Set<UserRole> userRole) {
-		this.userRole = userRole;
-	}
 
 	
 	

@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +27,6 @@ import com.redbee.challenge.util.QueryResult;
 import com.redbee.challenge.util.RestResponse;
 
 @RestController
-@CrossOrigin
 public class BoardController {
 
 	private static Logger LOGGER = LoggerFactory.getLogger(BoardController.class);

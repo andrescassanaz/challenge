@@ -7,6 +7,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.BeanIds;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -21,18 +23,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	UserDetailsService userService;
-
+	
+		
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
+		auth.userDetailsService(userService).passwordEncoder(new BCryptPasswordEncoder());
+	}
+	
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http.addFilterBefore(corsFilter(), SessionManagementFilter.class)
-				.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class).csrf().disable()
-				.authenticationProvider(authenticationProvider()).authorizeRequests().antMatchers(HttpMethod.OPTIONS)
-				.permitAll().antMatchers(HttpMethod.PUT, "/boards").permitAll()
-				.antMatchers(HttpMethod.DELETE, "/boards/{boardId}").permitAll()
-				.antMatchers(HttpMethod.GET, "/boards/{boardId}").permitAll().antMatchers("/api/**").authenticated()
-				.antMatchers("/").permitAll().and().logout().clearAuthentication(true).invalidateHttpSession(true)
+				.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class)
+				.csrf().disable()
+				.authenticationProvider(authenticationProvider())
+				.authorizeRequests()
+				.antMatchers(HttpMethod.OPTIONS).permitAll()
+				.antMatchers(HttpMethod.POST, "/login").permitAll()
+				.anyRequest().authenticated()				
+				.and().logout().clearAuthentication(true).invalidateHttpSession(true)
 				.permitAll();
 	}
 

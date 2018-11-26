@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,8 +17,9 @@ import com.redbee.challenge.util.QueryResult;
 import com.redbee.challenge.util.RestResponse;
 
 @RestController
-@CrossOrigin
-public class AuthenticationController {
+public class AuthenticatioController {
+	
+	public AuthenticatioController() {}
 
 	@Autowired
 	AuthenticationService autenticationService;
@@ -32,7 +32,6 @@ public class AuthenticationController {
 
 		User userAuth = autenticationService.login(user);
 		UserDto userDto = mapperService.mapUserToDto(userAuth);
-		
 		
 		List<UserDto> users = new ArrayList<UserDto>();
 		users.add(userDto);

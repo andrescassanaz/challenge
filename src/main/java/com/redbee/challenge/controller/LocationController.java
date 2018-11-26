@@ -30,7 +30,6 @@ import com.redbee.challenge.util.RestResponse;
 import com.redbee.challenge.util.yahoo.api.YahooRestClientService;
 
 @RestController
-@CrossOrigin
 public class LocationController {
 
 	private static Logger LOGGER = LoggerFactory.getLogger(LocationController.class);

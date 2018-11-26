@@ -8,7 +8,6 @@ public class UserDto {
 	private String password;
 	private String type;
 	private String token;
-	private List<UserRoleDto> userRol;
 
 	public String getUsername() {
 		return username;
@@ -42,12 +41,5 @@ public class UserDto {
 		this.token = token;
 	}
 
-	public List<UserRoleDto> getUserRol() {
-		return userRol;
-	}
-
-	public void setUserRol(List<UserRoleDto> userRol) {
-		this.userRol = userRol;
-	}
 
 }

@@ -1,6 +1,3 @@
-/*
- * 
- */
 package com.redbee.challenge.repository;
 
 import java.io.Serializable;

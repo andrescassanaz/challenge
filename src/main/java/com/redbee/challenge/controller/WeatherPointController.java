@@ -19,7 +19,6 @@ import com.redbee.challenge.util.QueryResult;
 import com.redbee.challenge.util.RestResponse;
 
 @RestController
-@CrossOrigin
 public class WeatherPointController {
 	
 	private static Logger LOGGER = LoggerFactory.getLogger(WeatherPointController.class);

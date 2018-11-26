@@ -33,12 +33,12 @@ public class AuthenticationService implements com.redbee.challenge.service.Authe
 		authentication = authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
 
-		User bdUser = userService.findByUsername(user.getUsername());
-		user.setUserRole(bdUser.getUserRole());
+		String tokenJwt = jwtService.generateToken(user.getUsername());
+		
+		User dbUser = userService.findByUsername(user.getUsername());
+		user.setType(dbUser.getType());
 		user.setPassword(null);
-
-		String jwt = jwtService.generateToken(user.getUsername());
-		user.setToken(jwt);
+		user.setToken(tokenJwt);
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
