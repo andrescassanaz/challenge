@@ -112,4 +112,36 @@ public class WeatherPointServiceImpl implements WeatherPointService {
 		return mapperService.mapWeatherPointToDto(lastWeatherPoint);
 	}
 
+	@Override
+	public List<WeatherPointDto> getWeatherPointByLocationAndDate(String woeid, Long timeInMilliseconds) {
+
+		Location location = locationService.findById(Long.parseLong(woeid));
+
+		Calendar startOfTheDayCalendar = Calendar.getInstance();
+		startOfTheDayCalendar.setTimeInMillis(timeInMilliseconds);
+		startOfTheDayCalendar.set(Calendar.MILLISECOND, 0);
+		startOfTheDayCalendar.set(Calendar.SECOND, 0);
+		startOfTheDayCalendar.set(Calendar.MINUTE, 0);
+		startOfTheDayCalendar.set(Calendar.HOUR_OF_DAY, 0);
+
+		Calendar endOfTheDayCalendar = Calendar.getInstance();
+		endOfTheDayCalendar.setTimeInMillis(timeInMilliseconds);
+		endOfTheDayCalendar.set(Calendar.MILLISECOND, 999);
+		endOfTheDayCalendar.set(Calendar.SECOND, 59);
+		endOfTheDayCalendar.set(Calendar.MINUTE, 59);
+		endOfTheDayCalendar.set(Calendar.HOUR_OF_DAY, 23);
+		
+
+		Set<WeatherPoint> weatherPoints = weatherPointRepository.findByLocationAndDate(location,
+				startOfTheDayCalendar.getTimeInMillis(), endOfTheDayCalendar.getTimeInMillis());
+
+		List<WeatherPointDto> weatherPointsDto = new ArrayList<WeatherPointDto>();
+		for (WeatherPoint weatherPoint : weatherPoints) {
+			weatherPointsDto.add(mapperService.mapWeatherPointToDto(weatherPoint));
+		}
+
+		return weatherPointsDto;
+
+	}
+
 }

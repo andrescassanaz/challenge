@@ -36,7 +36,10 @@ public interface WeatherPointService {
 
 	public List<WeatherPointDto> getWeatherPointByLocation(String woeid);
 	
+	public List<WeatherPointDto> getWeatherPointByLocationAndDate(String woeid, Long timeInMilliseconds);
+	
 	public WeatherPointDto getLastWeatherPointByLocation(String woeid);
+	
 	
 	
 	

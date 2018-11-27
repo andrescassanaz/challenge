@@ -106,5 +106,6 @@ public class BoardController {
 		}
 		return queryResult;
 	}
+	
 
 }
