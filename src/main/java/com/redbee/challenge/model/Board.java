@@ -3,7 +3,6 @@ package com.redbee.challenge.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,8 +14,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.PreRemove;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+/**
+ * @author Andres Cassanaz
+ *
+ */
 @Entity
 public class Board {
 

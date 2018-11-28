@@ -10,17 +10,27 @@ import com.redbee.challenge.model.Board;
 import com.redbee.challenge.model.Location;
 import com.redbee.challenge.model.User;
 
+/**
+ * @author Andres Cassanaz
+ *
+ */
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Serializable> {
 
 	/**
-	 * Find by user.
+	 * Find boards by user.
 	 *
 	 * @param user the user
-	 * @return Boards of a user
+	 * @return the set of boards
 	 */
 	Set<Board> findByUser(User user);
 
+	/**
+	 * Find boards by locations.
+	 *
+	 * @param location the location
+	 * @return the sets of boards
+	 */
 	Set<Board> findByLocations(Set<Location> location);
 
 }

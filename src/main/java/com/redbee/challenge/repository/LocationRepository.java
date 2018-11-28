@@ -12,6 +12,12 @@ import com.redbee.challenge.model.Location;
 @Repository
 public interface LocationRepository extends JpaRepository<Location, Serializable>{
 
+	/**
+	 * Find location by boards.
+	 *
+	 * @param boards the boards
+	 * @return the location by boards
+	 */
 	Set<Location> findByBoards(Set<Board> boards);
 	
 

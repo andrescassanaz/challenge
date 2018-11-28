@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -58,6 +59,7 @@ public class BoardServiceImpl implements BoardService {
 	private ObjectMapper mapper = new ObjectMapper();
 
 	@Override
+	@Transactional(rollbackFor=Exception.class)
 	public Board save(String boardJson) throws JsonParseException, JsonMappingException, IOException {
 
 		BoardDto boardDto = this.mapper.readValue(boardJson, BoardDto.class);

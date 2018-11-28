@@ -14,6 +14,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 
+/**
+ * @author Andres Cassanaz
+ *
+ */
 @Entity
 public class Location {
 

@@ -16,6 +16,10 @@ import com.redbee.challenge.service.WeatherPointService;
 import com.redbee.challenge.util.QueryResult;
 import com.redbee.challenge.util.RestResponse;
 
+/**
+ * @author Andres Cassanaz
+ *
+ */
 @RestController
 public class WeatherPointController {
 
@@ -24,6 +28,12 @@ public class WeatherPointController {
 	@Autowired
 	WeatherPointService weatherPointService;
 
+	/**
+	 * Gets the weather points by location.
+	 *
+	 * @param woeid the woeid of city
+	 * @return the weather points by location
+	 */
 	@GetMapping("/weatherpoints/{woeid}")
 	public QueryResult getWeatherPointsByLocation(@PathVariable String woeid) {
 		WeatherPointDto lastWeatherPoint = weatherPointService.getLastWeatherPointByLocation(woeid);
@@ -33,6 +43,13 @@ public class WeatherPointController {
 		return new QueryResult(restResponse, new ArrayList<Object>(weatherPoints));
 	}
 
+	/**
+	 * Gets the weather points by location and date.
+	 *
+	 * @param woeid the woeid
+	 * @param date the date
+	 * @return the weather points by location and date
+	 */
 	@GetMapping("/weatherpoints/{woeid}/{date}")
 	public QueryResult getWeatherPointsByLocationAndDate(@PathVariable String woeid,@PathVariable Long date) {
 		List<WeatherPointDto> weatherPointByLocationAndDate = weatherPointService.getWeatherPointByLocationAndDate(woeid, date);

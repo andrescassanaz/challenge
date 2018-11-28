@@ -10,25 +10,47 @@ import org.springframework.stereotype.Repository;
 import com.redbee.challenge.model.Location;
 import com.redbee.challenge.model.WeatherPoint;
 
+/**
+ * @author Andres Cassanaz
+ *
+ */
 @Repository
 public interface WeatherPointRepository extends JpaRepository<WeatherPoint, Serializable> {
 
 	/**
-	 * Find Weather History Point by location and date.
+	 * Find WeatherPoint by location and date.
 	 *
 	 * @param location the location
-	 * @param date the date
-	 * @return the weather history point
+	 * @param date     the date
+	 * @return the weather point
 	 */
 	public WeatherPoint findByLocationAndDate(Location location, long date);
 
-	//@Query("SELECT * FROM weather_point WHERE id_location = #{location} and date between #{startOfTheDay} and #{endOfTheDay}")
+	/**
+	 * Find WeatherPoints by location and date.
+	 *
+	 * @param location      the location
+	 * @param startOfTheDay the start of the day
+	 * @param endOfTheDay   the end of the day
+	 * @return the weather points
+	 */
 	@Query("SELECT wp FROM WeatherPoint wp WHERE id_location = ?1 and date between ?2 and ?3 ORDER BY date asc")
 	public Set<WeatherPoint> findByLocationAndDate(Location location, long startOfTheDay, long endOfTheDay);
-	
+
+	/**
+	 * Find WeatherPoints by location.
+	 *
+	 * @param location the location
+	 * @return the weatherpoints
+	 */
 	public Set<WeatherPoint> findByLocation(Location location);
-	
+
+	/**
+	 * Find last weatherpoint of location
+	 *
+	 * @param location the location
+	 * @return the weather point
+	 */
 	public WeatherPoint findFirstByLocationOrderByDateDesc(Location location);
 
 }
-	

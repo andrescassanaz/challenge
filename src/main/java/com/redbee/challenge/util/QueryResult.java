@@ -2,6 +2,10 @@ package com.redbee.challenge.util;
 
 import java.util.List;
 
+/**
+ * @author Andres Cassanaz
+ *
+ */
 public class QueryResult {
 
 	private RestResponse restResponse;

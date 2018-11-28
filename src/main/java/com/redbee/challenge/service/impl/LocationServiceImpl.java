@@ -11,18 +11,17 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.redbee.challenge.dto.BoardDto;
 import com.redbee.challenge.dto.LocationDto;
 import com.redbee.challenge.exception.BoardNotFoundException;
 import com.redbee.challenge.exception.CityNotFoundException;
 import com.redbee.challenge.exception.LocationNotFoundException;
 import com.redbee.challenge.model.Board;
 import com.redbee.challenge.model.Location;
-import com.redbee.challenge.model.User;
 import com.redbee.challenge.model.WeatherPoint;
 import com.redbee.challenge.repository.LocationRepository;
 import com.redbee.challenge.service.BoardService;
@@ -53,24 +52,13 @@ public class LocationServiceImpl implements LocationService {
 
 	private ObjectMapper mapper = new ObjectMapper();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.redbee.challenge.service.LocationService#save(com.redbee.challenge.model.
-	 * Location)
-	 */
 	@Override
+	@Transactional(rollbackFor=Exception.class)
 	public Location save(Location location) {
 		return locationRepository.save(location);
 	}
 
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.redbee.challenge.service.LocationService#findById(long)
-	 */
 	@Override
 	public Location findById(long id) {
 		Optional<Location> location = locationRepository.findById(id);
@@ -82,13 +70,8 @@ public class LocationServiceImpl implements LocationService {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.redbee.challenge.service.LocationService#addLocation(java.lang.String)
-	 */
 	@Override
+	@Transactional(rollbackFor=Exception.class)
 	public RestResponse addLocation(String locationJson)
 			throws JsonParseException, JsonMappingException, IOException, CityNotFoundException, ParseException {
 		RestResponse restResponse;
@@ -135,6 +118,7 @@ public class LocationServiceImpl implements LocationService {
 	}
 
 	@Override
+	@Transactional(rollbackFor=Exception.class)
 	public Location deleteLocationOfBoard(String boardId,String woeid) throws JsonParseException, JsonMappingException,
 			IOException, BoardNotFoundException, LocationNotFoundException {
 		Location location = this.findById(Long.parseLong(woeid));

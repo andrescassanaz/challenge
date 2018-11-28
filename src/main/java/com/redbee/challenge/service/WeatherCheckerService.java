@@ -4,8 +4,18 @@ import java.text.ParseException;
 
 import com.redbee.challenge.exception.CityNotFoundException;
 
+/**
+ * @author Andres Cassanaz
+ *
+ */
 public interface WeatherCheckerService {
 
+	/**
+	 * Start weather checker.
+	 *
+	 * @throws ParseException the parse exception
+	 * @throws CityNotFoundException the city not found exception
+	 */
 	void startWeatherChecker() throws ParseException, CityNotFoundException;
 
 }

@@ -2,6 +2,10 @@ package com.redbee.challenge.dto;
 
 import java.util.List;
 
+/**
+ * @author Andres Cassanaz
+ *
+ */
 public class LocationDto {
 
 	private long woeid;

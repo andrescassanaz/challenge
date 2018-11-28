@@ -15,6 +15,10 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+/**
+ * @author Andres Cassanaz
+ * Jwt Service
+ */
 @Component
 public class JwtService {
 
@@ -25,6 +29,12 @@ public class JwtService {
 	@Autowired
 	UserDetailsService userDetails;
 
+	/**
+	 * Generete a token
+	 * 
+	 * @param username 
+	 * @return generated token
+	 */
 	public String generateToken(String username) {
 		return Jwts.builder().setSubject(username)
 				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))

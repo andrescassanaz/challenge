@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.redbee.challenge.dto.WeatherPointDto;
 import com.redbee.challenge.exception.CityNotFoundException;
@@ -40,6 +41,7 @@ public class WeatherPointServiceImpl implements WeatherPointService {
 	MapperService mapperService;
 
 	@Override
+	@Transactional(rollbackFor=Exception.class)
 	public WeatherPoint save(WeatherPoint weatherPoint) {
 		return weatherPointRepository.save(weatherPoint);
 	}

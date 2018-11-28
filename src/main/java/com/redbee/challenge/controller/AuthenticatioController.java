@@ -16,6 +16,11 @@ import com.redbee.challenge.service.MapperService;
 import com.redbee.challenge.util.QueryResult;
 import com.redbee.challenge.util.RestResponse;
 
+/**
+ * The Class AuthenticatioController.
+ *
+ * @author Andres Cassanaz
+ */
 @RestController
 public class AuthenticatioController {
 	
@@ -27,6 +32,12 @@ public class AuthenticatioController {
 	@Autowired
 	MapperService mapperService;
 
+	/**
+	 * Login.
+	 *
+	 * @param user the user
+	 * @return a QueryResult
+	 */
 	@PostMapping("/login")
 	public QueryResult login(@RequestBody User user) {
 

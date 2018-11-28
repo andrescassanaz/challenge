@@ -1,5 +1,9 @@
 package com.redbee.challenge.dto;
 
+/**
+ * @author Andres Cassanaz
+ *
+ */
 public class WeatherPointDto {
 	private long id;
 	private long date;

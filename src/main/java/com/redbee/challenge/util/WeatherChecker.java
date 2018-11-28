@@ -1,8 +1,6 @@
 package com.redbee.challenge.util;
 
 import java.text.ParseException;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -17,6 +15,10 @@ import org.springframework.stereotype.Service;
 import com.redbee.challenge.exception.CityNotFoundException;
 import com.redbee.challenge.service.WeatherCheckerService;
 
+/**
+ * @author Andres Cassanaz
+ *
+ */
 @Service
 public class WeatherChecker {
 
@@ -35,6 +37,9 @@ public class WeatherChecker {
 		}
 	};
 
+	/**
+	 * Starts a task every x minutes to review the current climate and update it
+	 */
 	@EventListener(ApplicationReadyEvent.class)
 	public void start() {
 		ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);

@@ -3,7 +3,6 @@ package com.redbee.challenge.service;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
-import java.util.Set;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -33,32 +32,46 @@ public interface LocationService {
 	public Location findById(long id);
 
 	/**
-	 * Adds the location.
+	 * Add a new location.
 	 *
 	 * @param locationJson the location on json format
 	 * @return restResonse
-	 * @throws IOException
-	 * @throws JsonMappingException
-	 * @throws JsonParseException
-	 * @throws CityNotFoundException 
-	 * @throws ParseException 
+	 * @throws JsonParseException json parse exception
+	 * @throws JsonMappingException json mapping exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws CityNotFoundException city not found exception
+	 * @throws ParseException parse exception
 	 */ 
 	public RestResponse addLocation(String locationJson) throws JsonParseException, JsonMappingException, IOException, CityNotFoundException, ParseException;
 
 	/**
 	 * Delete location.
 	 *
-	 * @param locationJson the location on json format
+	 * @param boardId the board id
+	 * @param woeid the woeid of city
 	 * @return restResonse
-	 * @throws IOException
-	 * @throws JsonMappingException
-	 * @throws JsonParseException
+	 * @throws JsonParseException json parse exception
+	 * @throws JsonMappingException json mapping exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws BoardNotFoundException board not found exception
+	 * @throws LocationNotFoundException location not found exception
 	 */
 
 	public Location deleteLocationOfBoard(String boardId,String  woeid) throws JsonParseException, JsonMappingException, IOException, BoardNotFoundException, LocationNotFoundException;
 	
+	/**
+	 * Find all.
+	 *
+	 * @return the list of all locations
+	 */
 	public List<Location> findAll();
 
+	/**
+	 * Gets the locations by board.
+	 *
+	 * @param boardId the board id
+	 * @return the locations by board
+	 */
 	public List<LocationDto> getLocationsByBoard(String boardId);
 	
 

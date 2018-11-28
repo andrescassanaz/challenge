@@ -9,8 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +24,10 @@ import com.redbee.challenge.service.BoardService;
 import com.redbee.challenge.util.QueryResult;
 import com.redbee.challenge.util.RestResponse;
 
+/**
+ * @author Andres Cassanaz
+ *
+ */
 @RestController
 public class BoardController {
 
@@ -36,6 +38,12 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 
+	/**
+	 * Add new board the board.
+	 *
+	 * @param boardJson the board in json format
+	 * @return a RestResponse
+	 */
 	@PutMapping("/boards/")
 	public RestResponse addBoard(@RequestBody String boardJson) {
 		RestResponse restResponse;
@@ -55,6 +63,12 @@ public class BoardController {
 		return restResponse;
 	}
 
+	/**
+	 * Delete board.
+	 *
+	 * @param boardId the board id
+	 * @return a RestResponse
+	 */
 	@DeleteMapping("/boards/{boardId}")
 	public RestResponse deleteBoard(@PathVariable String boardId) {
 		RestResponse restResponse;
@@ -77,9 +91,9 @@ public class BoardController {
 	/**
 	 * Gets complete boards by user.
 	 *
-	 * @param userJson the user json
+	 * @param username the username
 	 * @return the boards by user
-	 * @throws CityNotFoundException
+	 * @throws CityNotFoundException the city not found exception
 	 */
 	@GetMapping("/boards/{username}")
 	public QueryResult getBoardsByUser(@PathVariable String username) throws CityNotFoundException {

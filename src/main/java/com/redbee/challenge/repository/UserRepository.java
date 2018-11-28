@@ -7,9 +7,19 @@ import org.springframework.stereotype.Repository;
 
 import com.redbee.challenge.model.User;
 
+/**
+ * @author Andres Cassanaz
+ *
+ */
 @Repository
 public interface UserRepository extends JpaRepository<User, Serializable>{
 
+	/**
+	 * Find user by username.
+	 *
+	 * @param username the username
+	 * @return the user
+	 */
 	public User findByUsername(String username);
 	
 	

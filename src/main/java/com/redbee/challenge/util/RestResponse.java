@@ -1,7 +1,8 @@
 package com.redbee.challenge.util;
 
 /**
- * Class to use in rest response
+ * @author Andres Cassanaz
+ *
  */
 public class RestResponse {
 

@@ -1,7 +1,9 @@
 package com.redbee.challenge.dto;
 
-import java.util.List;
-
+/**
+ * @author Andres Cassanaz
+ *
+ */
 public class UserDto {
 
 	private String username;

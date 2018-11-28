@@ -2,6 +2,10 @@ package com.redbee.challenge.service;
 
 import com.redbee.challenge.model.User;
 
+/**
+ * @author Andres Cassanaz
+ *
+ */
 public interface UserService {
 	
 	/**
@@ -13,6 +17,12 @@ public interface UserService {
 	public User save(User user);
 	
 
+	/**
+	 * Find by username.
+	 *
+	 * @param username the username
+	 * @return the user
+	 */
 	public User findByUsername(String username);
 
 }

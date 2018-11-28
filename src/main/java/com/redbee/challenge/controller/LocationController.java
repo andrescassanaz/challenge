@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +28,10 @@ import com.redbee.challenge.util.QueryResult;
 import com.redbee.challenge.util.RestResponse;
 import com.redbee.challenge.util.yahoo.api.YahooRestClientService;
 
+/**
+ * @author Andres Cassanaz
+ *
+ */
 @RestController
 public class LocationController {
 
@@ -45,6 +48,12 @@ public class LocationController {
 	@Autowired
 	YahooRestClientService yahooRestClientService;
 
+	/**
+	 * Gets the locations by board.
+	 *
+	 * @param boardId the board id
+	 * @return the locations by board
+	 */
 	@GetMapping("/locations/{boardId}")
 	public QueryResult getLocationsByBoard(@PathVariable String boardId) {
 		List<LocationDto> locationByBoard = locationService.getLocationsByBoard(boardId);
@@ -53,7 +62,7 @@ public class LocationController {
 	}
 
 	/**
-	 * Adds a new location.
+	 * Add a new location.
 	 *
 	 * @param locationJson the location on json format
 	 * @return restResponse
@@ -83,6 +92,13 @@ public class LocationController {
 		return restResponse;
 	}
 
+	/**
+	 * Delete location of board.
+	 *
+	 * @param boardId the board id
+	 * @param woeid the woeid of city
+	 * @return a RestResponse
+	 */
 	@DeleteMapping("/locations/{boardId}/{woeid}")
 	public RestResponse deleteLocationOfBoard(@PathVariable String boardId, @PathVariable String woeid) {
 		RestResponse restResponse;

@@ -14,6 +14,11 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
+/**
+ * @author Andres Cassanaz
+ *
+ */
 public class CorsFilter implements Filter {
 
 	@Override

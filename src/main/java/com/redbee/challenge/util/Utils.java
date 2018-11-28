@@ -9,6 +9,10 @@ import java.util.Locale;
 
 import org.springframework.stereotype.Service;
 
+/**
+ * @author Andres Cassanaz
+ *
+ */
 @Service
 public class Utils {
 	
