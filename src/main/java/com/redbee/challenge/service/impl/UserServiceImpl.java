@@ -41,7 +41,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		LOGGER.info("loadUserByUsername: "+username);
 		User user = userRepository.findByUsername(username);
 
 		if (user == null) {

@@ -14,13 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.redbee.challenge.dto.WeatherPointDto;
 import com.redbee.challenge.exception.CityNotFoundException;
+import com.redbee.challenge.exception.YahooApiException;
 import com.redbee.challenge.model.Location;
 import com.redbee.challenge.model.WeatherPoint;
 import com.redbee.challenge.repository.WeatherPointRepository;
 import com.redbee.challenge.service.LocationService;
 import com.redbee.challenge.service.MapperService;
 import com.redbee.challenge.service.WeatherPointService;
-import com.redbee.challenge.util.Utils;
 import com.redbee.challenge.util.yahoo.api.YahooRestClientService;
 import com.redbee.challenge.util.yahoo.api.data.YahooApiResponse;
 
@@ -33,9 +33,6 @@ public class WeatherPointServiceImpl implements WeatherPointService {
 
 	@Autowired
 	WeatherPointRepository weatherPointRepository;
-
-	@Autowired
-	Utils utils;
 
 	@Autowired
 	YahooRestClientService yahooRestClientService;
@@ -73,14 +70,11 @@ public class WeatherPointServiceImpl implements WeatherPointService {
 	public WeatherPoint buildWeatherPoint(Location locationSaved, YahooApiResponse yahooApiResponse)
 			throws ParseException {
 
-		Calendar date = utils.parseStringToCalendar(
-				yahooApiResponse.getQuery().getResults().getChannel().getItem().getCondition().getDate());
-
 		int temp = yahooApiResponse.getQuery().getResults().getChannel().getItem().getCondition().getTemp();
 		int code = yahooApiResponse.getQuery().getResults().getChannel().getItem().getCondition().getCode();
 		String description = yahooApiResponse.getQuery().getResults().getChannel().getItem().getCondition().getText();
 
-		WeatherPoint weatherPoint = new WeatherPoint(locationSaved, date.getTimeInMillis(), temp, code, description);
+		WeatherPoint weatherPoint = new WeatherPoint(locationSaved, System.currentTimeMillis(), temp, code, description);
 		return weatherPoint;
 	}
 
@@ -98,7 +92,7 @@ public class WeatherPointServiceImpl implements WeatherPointService {
 
 	}
 
-	public WeatherPoint updateWeatherPointOfLocation(Location location) throws ParseException, CityNotFoundException {
+	public WeatherPoint updateWeatherPointOfLocation(Location location) throws ParseException, CityNotFoundException, YahooApiException {
 		LOGGER.info("updateWeatherPointOfLocation: location: "+ location.getWoeid() +" "+location.getCity()+", "+location.getCountry());
 		YahooApiResponse weatherResponse = yahooRestClientService.getWeatherFromWoeid(location.getWoeid());
 		WeatherPoint weatherPoint = this.buildWeatherPoint(location, weatherResponse);

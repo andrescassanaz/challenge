@@ -13,6 +13,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import com.redbee.challenge.exception.CityNotFoundException;
+import com.redbee.challenge.exception.YahooApiException;
 import com.redbee.challenge.service.WeatherCheckerService;
 
 /**
@@ -36,6 +37,8 @@ public class WeatherChecker {
 					LOGGER.error("ParseException");					
 				} catch (CityNotFoundException e) {
 					LOGGER.error("CityNotFoundException");
+				} catch (YahooApiException e) {
+					LOGGER.error("YahooApiException");
 				}
 			
 		}

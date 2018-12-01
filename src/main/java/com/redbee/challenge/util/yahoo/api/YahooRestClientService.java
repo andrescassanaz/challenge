@@ -15,6 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.redbee.challenge.exception.CityNotFoundException;
+import com.redbee.challenge.exception.YahooApiException;
 import com.redbee.challenge.util.yahoo.api.data.YahooApiResponse;
 
 /**
@@ -33,8 +34,9 @@ public class YahooRestClientService {
 	 * @param woeid the woeid
 	 * @return the actual weather
 	 * @throws CityNotFoundException
+	 * @throws YahooApiException 
 	 */
-	public YahooApiResponse getWeatherFromWoeid(long woeid) throws CityNotFoundException {
+	public YahooApiResponse getWeatherFromWoeid(long woeid) throws CityNotFoundException, YahooApiException {
 		LOGGER.info("getWeatherFromWoeid: woeid: " + woeid);
 		RestTemplate restTemplate = new RestTemplate();
 
@@ -62,8 +64,8 @@ public class YahooRestClientService {
 
 		if (yahooApiResponse.getQuery().getResults() == null
 				|| yahooApiResponse.getQuery().getResults().getChannel().getLocation() == null) {
-			LOGGER.error("City not found");
-			throw new CityNotFoundException();
+			LOGGER.error("Yahoo Api Exception");
+			throw new YahooApiException();
 		}
 
 		return yahooApiResponse;

@@ -10,7 +10,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.redbee.challenge.configuration.JwtService;
-import com.redbee.challenge.controller.WebSocketController;
 import com.redbee.challenge.model.User;
 import com.redbee.challenge.service.UserService;
 

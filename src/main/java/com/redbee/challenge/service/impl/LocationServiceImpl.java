@@ -22,6 +22,7 @@ import com.redbee.challenge.dto.LocationDto;
 import com.redbee.challenge.exception.BoardNotFoundException;
 import com.redbee.challenge.exception.CityNotFoundException;
 import com.redbee.challenge.exception.LocationNotFoundException;
+import com.redbee.challenge.exception.YahooApiException;
 import com.redbee.challenge.model.Board;
 import com.redbee.challenge.model.Location;
 import com.redbee.challenge.model.WeatherPoint;
@@ -81,7 +82,7 @@ public class LocationServiceImpl implements LocationService {
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public RestResponse addLocation(String locationJson)
-			throws JsonParseException, JsonMappingException, IOException, CityNotFoundException, ParseException {
+			throws JsonParseException, JsonMappingException, IOException, CityNotFoundException, ParseException, YahooApiException {
 
 		LOGGER.info("addLocation: " + locationJson);
 		RestResponse restResponse;

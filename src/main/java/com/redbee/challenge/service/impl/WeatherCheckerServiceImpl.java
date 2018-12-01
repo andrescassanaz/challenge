@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.redbee.challenge.exception.CityNotFoundException;
+import com.redbee.challenge.exception.YahooApiException;
 import com.redbee.challenge.model.Location;
 import com.redbee.challenge.service.LocationService;
 import com.redbee.challenge.service.WeatherCheckerService;
@@ -30,7 +31,7 @@ public class WeatherCheckerServiceImpl implements WeatherCheckerService {
 	WeatherPointService weatherPointService;
 
 	@Override
-	public void startWeatherChecker() {
+	public void startWeatherChecker() throws YahooApiException {
 		List<Location> locations = locationService.findAll();
 		for (Location location : locations) {
 			try {
