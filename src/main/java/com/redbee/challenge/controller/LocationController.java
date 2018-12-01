@@ -22,6 +22,7 @@ import com.redbee.challenge.dto.LocationDto;
 import com.redbee.challenge.exception.BoardNotFoundException;
 import com.redbee.challenge.exception.CityNotFoundException;
 import com.redbee.challenge.exception.LocationNotFoundException;
+import com.redbee.challenge.exception.YahooApiCallLimitExceededException;
 import com.redbee.challenge.exception.YahooApiException;
 import com.redbee.challenge.service.LocationService;
 import com.redbee.challenge.service.WeatherPointService;
@@ -93,6 +94,9 @@ public class LocationController {
 			LOGGER.error(restResponse.getMessage());
 		} catch (YahooApiException e) {
 			restResponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: YahooApiException");
+			LOGGER.error(restResponse.getMessage());
+		} catch (YahooApiCallLimitExceededException e) {
+			restResponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: YahooApiCallLimitExceededException");
 			LOGGER.error(restResponse.getMessage());
 		}
 		return restResponse;

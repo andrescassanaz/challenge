@@ -10,6 +10,7 @@ import com.redbee.challenge.dto.LocationDto;
 import com.redbee.challenge.exception.BoardNotFoundException;
 import com.redbee.challenge.exception.CityNotFoundException;
 import com.redbee.challenge.exception.LocationNotFoundException;
+import com.redbee.challenge.exception.YahooApiCallLimitExceededException;
 import com.redbee.challenge.exception.YahooApiException;
 import com.redbee.challenge.model.Location;
 import com.redbee.challenge.util.RestResponse;
@@ -43,8 +44,9 @@ public interface LocationService {
 	 * @throws CityNotFoundException city not found exception
 	 * @throws ParseException parse exception
 	 * @throws YahooApiException 
+	 * @throws YahooApiCallLimitExceededException 
 	 */ 
-	public RestResponse addLocation(String locationJson) throws JsonParseException, JsonMappingException, IOException, CityNotFoundException, ParseException, YahooApiException;
+	public RestResponse addLocation(String locationJson) throws JsonParseException, JsonMappingException, IOException, CityNotFoundException, ParseException, YahooApiException, YahooApiCallLimitExceededException;
 
 	/**
 	 * Delete location.

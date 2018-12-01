@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.redbee.challenge.exception.CityNotFoundException;
+import com.redbee.challenge.exception.YahooApiCallLimitExceededException;
 import com.redbee.challenge.exception.YahooApiException;
 import com.redbee.challenge.model.Location;
 import com.redbee.challenge.service.LocationService;
@@ -40,6 +41,8 @@ public class WeatherCheckerServiceImpl implements WeatherCheckerService {
 				LOGGER.error("WeatherChecker -> ParseException -> WOEID: " + location.getWoeid());
 			} catch (CityNotFoundException e) {
 				LOGGER.error("WeatherChecker -> CityNotFoundException -> WOEID: " + location.getWoeid());
+			} catch (YahooApiCallLimitExceededException e) {
+				LOGGER.error("WeatherChecker -> YahooApiCallLimitExceededException");
 			}
 		}
 	}

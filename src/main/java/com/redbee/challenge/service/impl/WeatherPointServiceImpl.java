@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.redbee.challenge.dto.WeatherPointDto;
 import com.redbee.challenge.exception.CityNotFoundException;
+import com.redbee.challenge.exception.YahooApiCallLimitExceededException;
 import com.redbee.challenge.exception.YahooApiException;
 import com.redbee.challenge.model.Location;
 import com.redbee.challenge.model.WeatherPoint;
@@ -92,7 +93,7 @@ public class WeatherPointServiceImpl implements WeatherPointService {
 
 	}
 
-	public WeatherPoint updateWeatherPointOfLocation(Location location) throws ParseException, CityNotFoundException, YahooApiException {
+	public WeatherPoint updateWeatherPointOfLocation(Location location) throws ParseException, CityNotFoundException, YahooApiException, YahooApiCallLimitExceededException {
 		LOGGER.info("updateWeatherPointOfLocation: location: "+ location.getWoeid() +" "+location.getCity()+", "+location.getCountry());
 		YahooApiResponse weatherResponse = yahooRestClientService.getWeatherFromWoeid(location.getWoeid());
 		WeatherPoint weatherPoint = this.buildWeatherPoint(location, weatherResponse);

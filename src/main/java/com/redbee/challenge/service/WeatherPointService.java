@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.redbee.challenge.dto.WeatherPointDto;
 import com.redbee.challenge.exception.CityNotFoundException;
+import com.redbee.challenge.exception.YahooApiCallLimitExceededException;
 import com.redbee.challenge.exception.YahooApiException;
 import com.redbee.challenge.model.Location;
 import com.redbee.challenge.model.WeatherPoint;
@@ -59,8 +60,9 @@ public interface WeatherPointService {
 	 * @throws ParseException the parse exception
 	 * @throws CityNotFoundException the city not found exception
 	 * @throws YahooApiException 
+	 * @throws YahooApiCallLimitExceededException 
 	 */
-	public WeatherPoint updateWeatherPointOfLocation(Location location) throws ParseException, CityNotFoundException, YahooApiException;
+	public WeatherPoint updateWeatherPointOfLocation(Location location) throws ParseException, CityNotFoundException, YahooApiException, YahooApiCallLimitExceededException;
 
 	/**
 	 * Gets the weather point by location.
