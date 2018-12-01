@@ -29,11 +29,15 @@ public class WeatherChecker {
 
 	Runnable startChecker = new Runnable() {
 		public void run() {
-			try {
-				weatherCheckerService.startWeatherChecker();
-			} catch (ParseException | CityNotFoundException e) {
-				LOGGER.error("WeatherChecker -> Error");
-			}
+			
+				try {
+					weatherCheckerService.startWeatherChecker();
+				} catch (ParseException e) {
+					LOGGER.error("ParseException");					
+				} catch (CityNotFoundException e) {
+					LOGGER.error("CityNotFoundException");
+				}
+			
 		}
 	};
 
@@ -42,6 +46,7 @@ public class WeatherChecker {
 	 */
 	@EventListener(ApplicationReadyEvent.class)
 	public void start() {
+		LOGGER.info("Start WeatherChecker scheduled task");
 		ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 		executor.scheduleAtFixedRate(startChecker, 0, 30, TimeUnit.MINUTES);
 

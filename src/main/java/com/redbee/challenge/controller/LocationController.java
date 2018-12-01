@@ -56,6 +56,7 @@ public class LocationController {
 	 */
 	@GetMapping("/locations/{boardId}")
 	public QueryResult getLocationsByBoard(@PathVariable String boardId) {
+		LOGGER.info("GetMapping: " + "/locations/"+boardId);
 		List<LocationDto> locationByBoard = locationService.getLocationsByBoard(boardId);
 		RestResponse restResponse = new RestResponse(HttpStatus.OK.value(), "Ok");
 		return new QueryResult(restResponse, new ArrayList<Object>(locationByBoard));
@@ -69,6 +70,7 @@ public class LocationController {
 	 */
 	@PutMapping("/locations")
 	public RestResponse addLocation(@RequestBody String locationJson) {
+		LOGGER.info("PutMapping: " + "/locations/ : "+locationJson);
 		RestResponse restResponse;
 		try {
 			locationService.addLocation(locationJson);
@@ -101,6 +103,7 @@ public class LocationController {
 	 */
 	@DeleteMapping("/locations/{boardId}/{woeid}")
 	public RestResponse deleteLocationOfBoard(@PathVariable String boardId, @PathVariable String woeid) {
+		LOGGER.info("DeleteMapping: " + "/"+boardId+"/"+woeid);
 		RestResponse restResponse;
 		try {
 			locationService.deleteLocationOfBoard(boardId,  woeid);

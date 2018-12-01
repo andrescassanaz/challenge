@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +24,10 @@ import com.redbee.challenge.util.Utils;
 import com.redbee.challenge.util.yahoo.api.YahooRestClientService;
 import com.redbee.challenge.util.yahoo.api.data.YahooApiResponse;
 
+/**
+ * @author Andres Cassanaz
+ *
+ */
 @Service
 public class WeatherPointServiceImpl implements WeatherPointService {
 
@@ -40,14 +46,18 @@ public class WeatherPointServiceImpl implements WeatherPointService {
 	@Autowired
 	MapperService mapperService;
 
+	private static Logger LOGGER = LoggerFactory.getLogger(WeatherPointServiceImpl.class);
+	
 	@Override
 	@Transactional(rollbackFor=Exception.class)
 	public WeatherPoint save(WeatherPoint weatherPoint) {
+		LOGGER.info("save: "+ weatherPoint.getId() + " " + weatherPoint.getLocation().getCity());
 		return weatherPointRepository.save(weatherPoint);
 	}
 
 	@Override
 	public WeatherPoint findByLocationAndDate(Location location, Long date) {
+		LOGGER.info("findByLocationAndDate: location: "+ location.getWoeid() +" "+location.getCity()+", "+location.getCountry()+  " - date: "+date);
 		return weatherPointRepository.findByLocationAndDate(location, date);
 	}
 
@@ -89,15 +99,16 @@ public class WeatherPointServiceImpl implements WeatherPointService {
 	}
 
 	public WeatherPoint updateWeatherPointOfLocation(Location location) throws ParseException, CityNotFoundException {
+		LOGGER.info("updateWeatherPointOfLocation: location: "+ location.getWoeid() +" "+location.getCity()+", "+location.getCountry());
 		YahooApiResponse weatherResponse = yahooRestClientService.getWeatherFromWoeid(location.getWoeid());
 		WeatherPoint weatherPoint = this.buildWeatherPoint(location, weatherResponse);
-		System.out.println("Intentando guardar:" + location.getCity());
 		this.saveIfNecessary(weatherPoint);
 		return weatherPoint;
 	}
 
 	@Override
 	public List<WeatherPointDto> getWeatherPointByLocation(String woeid) {
+		LOGGER.info("getWeatherPointByLocation: location: "+ woeid);
 		Location location = locationService.findById(Long.parseLong(woeid));
 		Set<WeatherPoint> weatherPointsDb = weatherPointRepository.findByLocation(location);
 		List<WeatherPointDto> weatherPointsDto = new ArrayList<WeatherPointDto>();
@@ -109,6 +120,7 @@ public class WeatherPointServiceImpl implements WeatherPointService {
 
 	@Override
 	public WeatherPointDto getLastWeatherPointByLocation(String woeid) {
+		LOGGER.info("getLastWeatherPointByLocation: location: "+ woeid);
 		Location location = locationService.findById(Long.parseLong(woeid));
 		WeatherPoint lastWeatherPoint = weatherPointRepository.findFirstByLocationOrderByDateDesc(location);
 		return mapperService.mapWeatherPointToDto(lastWeatherPoint);
@@ -116,7 +128,7 @@ public class WeatherPointServiceImpl implements WeatherPointService {
 
 	@Override
 	public List<WeatherPointDto> getWeatherPointByLocationAndDate(String woeid, Long timeInMilliseconds) {
-
+		LOGGER.info("getWeatherPointByLocationAndDate: location: "+ woeid + " - date: "+ timeInMilliseconds);
 		Location location = locationService.findById(Long.parseLong(woeid));
 
 		Calendar startOfTheDayCalendar = Calendar.getInstance();

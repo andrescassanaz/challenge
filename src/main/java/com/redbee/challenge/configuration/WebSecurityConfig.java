@@ -47,6 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				//.anyRequest().authenticated()				
 				.and().logout().clearAuthentication(true).invalidateHttpSession(true)
 				.permitAll();
+		
 	}
 
 	@Bean

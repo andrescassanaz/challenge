@@ -3,6 +3,8 @@ package com.redbee.challenge.util.yahoo.api;
 import java.io.IOException;
 import java.net.URI;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -23,6 +25,7 @@ public class YahooRestClientService {
 
 	/** The Constant URL of API. */
 	private static final String URL = "http://query.yahooapis.com/v1/public/yql";
+	private static Logger LOGGER = LoggerFactory.getLogger(YahooRestClientService.class);
 
 	/**
 	 * Gets the weather from woeid.
@@ -32,7 +35,7 @@ public class YahooRestClientService {
 	 * @throws CityNotFoundException
 	 */
 	public YahooApiResponse getWeatherFromWoeid(long woeid) throws CityNotFoundException {
-
+		LOGGER.info("getWeatherFromWoeid: woeid: " + woeid);
 		RestTemplate restTemplate = new RestTemplate();
 
 		HttpHeaders headers = new HttpHeaders();
@@ -44,8 +47,9 @@ public class YahooRestClientService {
 
 		HttpEntity<?> entity = new HttpEntity<>(headers);
 
-		HttpEntity<String> response = restTemplate.exchange(builder.build().encode().toUri(), HttpMethod.GET, entity,
-				String.class);
+		URI uri = builder.build().encode().toUri();
+		LOGGER.info("subscribe to yahoo's API: " + uri);
+		HttpEntity<String> response = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class);
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		YahooApiResponse yahooApiResponse = new YahooApiResponse();
@@ -53,11 +57,12 @@ public class YahooRestClientService {
 		try {
 			yahooApiResponse = objectMapper.readValue(response.getBody(), YahooApiResponse.class);
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.error("Mapping error of the yahoo API response");
 		}
 
 		if (yahooApiResponse.getQuery().getResults() == null
 				|| yahooApiResponse.getQuery().getResults().getChannel().getLocation() == null) {
+			LOGGER.error("City not found");
 			throw new CityNotFoundException();
 		}
 
@@ -73,7 +78,7 @@ public class YahooRestClientService {
 	 * @throws CityNotFoundException exception for city not found
 	 */
 	public Long getWoeidFromCityName(String cityName) throws CityNotFoundException {
-
+		LOGGER.info("getWoeidFromCityName: cityName: " + cityName);
 		Long woeid = null;
 
 		RestTemplate restTemplate = new RestTemplate();
@@ -88,6 +93,7 @@ public class YahooRestClientService {
 		HttpEntity<?> entity = new HttpEntity<>(headers);
 
 		URI uri = builder.build().encode().toUri();
+		LOGGER.info("subscribe to yahoo's API: " + uri);
 		HttpEntity<String> response = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class);
 
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -97,8 +103,9 @@ public class YahooRestClientService {
 			yahooApiResponse = objectMapper.readValue(response.getBody(), YahooApiResponse.class);
 			woeid = yahooApiResponse.getQuery().getResults().getPlace().getWoeid();
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.error("Mapping error of the yahoo API response");
 		} catch (NullPointerException e) {
+			LOGGER.error("City Not Found");
 			throw new CityNotFoundException();
 		}
 

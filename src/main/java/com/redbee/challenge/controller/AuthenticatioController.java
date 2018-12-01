@@ -3,6 +3,8 @@ package com.redbee.challenge.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +33,8 @@ public class AuthenticatioController {
 	
 	@Autowired
 	MapperService mapperService;
+	
+	private static Logger LOGGER = LoggerFactory.getLogger(AuthenticatioController.class);
 
 	/**
 	 * Login.
@@ -40,7 +44,7 @@ public class AuthenticatioController {
 	 */
 	@PostMapping("/login")
 	public QueryResult login(@RequestBody User user) {
-
+		LOGGER.info("PostMapping: " + "/login");
 		User userAuth = autenticationService.login(user);
 		UserDto userDto = mapperService.mapUserToDto(userAuth);
 		

@@ -1,4 +1,4 @@
-package com.redbee.challenge.configuration;
+package com.redbee.challenge.util;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 

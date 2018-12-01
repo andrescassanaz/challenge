@@ -14,6 +14,10 @@ import com.redbee.challenge.service.LocationService;
 import com.redbee.challenge.service.WeatherCheckerService;
 import com.redbee.challenge.service.WeatherPointService;
 
+/**
+ * @author Andres Cassanaz
+ *
+ */
 @Service
 public class WeatherCheckerServiceImpl implements WeatherCheckerService {
 

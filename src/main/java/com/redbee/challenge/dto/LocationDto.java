@@ -8,18 +8,18 @@ import java.util.List;
  */
 public class LocationDto {
 
-	private long woeid;
+	private Long woeid;
 	private String city;
 	private String country;
-	private long boardId;
+	private Long boardId;
 	private List<WeatherPointDto> weatherPoints;
 
-	public long getBoardId() {
-		return boardId;
+	public Long getWoeid() {
+		return woeid;
 	}
 
-	public void setBoardId(long boardId) {
-		this.boardId = boardId;
+	public void setWoeid(Long woeid) {
+		this.woeid = woeid;
 	}
 
 	public String getCity() {
@@ -30,20 +30,20 @@ public class LocationDto {
 		this.city = city;
 	}
 
-	public long getWoeid() {
-		return woeid;
-	}
-
-	public void setWoeid(long woeid) {
-		this.woeid = woeid;
-	}
-
 	public String getCountry() {
 		return country;
 	}
 
 	public void setCountry(String country) {
 		this.country = country;
+	}
+
+	public Long getBoardId() {
+		return boardId;
+	}
+
+	public void setBoardId(Long boardId) {
+		this.boardId = boardId;
 	}
 
 	public List<WeatherPointDto> getWeatherPoints() {

@@ -34,6 +34,7 @@ public class BoardController {
 	private static Logger LOGGER = LoggerFactory.getLogger(BoardController.class);
 
 	private static int INTERNAL_SERVER_ERRROR = HttpStatus.INTERNAL_SERVER_ERROR.value();
+	
 
 	@Autowired
 	private BoardService boardService;
@@ -46,6 +47,7 @@ public class BoardController {
 	 */
 	@PutMapping("/boards/")
 	public RestResponse addBoard(@RequestBody String boardJson) {
+		LOGGER.info("PutMapping: " + "/boards/ : "+ boardJson);
 		RestResponse restResponse;
 		try {
 			boardService.save(boardJson);
@@ -71,6 +73,7 @@ public class BoardController {
 	 */
 	@DeleteMapping("/boards/{boardId}")
 	public RestResponse deleteBoard(@PathVariable String boardId) {
+		LOGGER.info("DeleteMapping: " + "/boards/"+boardId);
 		RestResponse restResponse;
 		try {
 			boardService.delete(boardId);
@@ -97,8 +100,7 @@ public class BoardController {
 	 */
 	@GetMapping("/boards/{username}")
 	public QueryResult getBoardsByUser(@PathVariable String username) throws CityNotFoundException {
-	
-		LOGGER.info("Executing getBoardsByUser()");
+		LOGGER.info("GetMapping: " + "/boards/"+username);
 		QueryResult queryResult;
 		try {
 			List<BoardDto> boardsByUser = boardService.getBoardsByUser(username);

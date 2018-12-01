@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,10 @@ import com.redbee.challenge.util.RestResponse;
 import com.redbee.challenge.util.yahoo.api.YahooRestClientService;
 import com.redbee.challenge.util.yahoo.api.data.YahooApiResponse;
 
+/**
+ * @author Andres Cassanaz
+ *
+ */
 @Service
 public class LocationServiceImpl implements LocationService {
 
@@ -46,21 +52,23 @@ public class LocationServiceImpl implements LocationService {
 
 	@Autowired
 	WeatherPointService weatherPointService;
-	
+
 	@Autowired
 	MapperService mapperService;
 
 	private ObjectMapper mapper = new ObjectMapper();
 
+	private static Logger LOGGER = LoggerFactory.getLogger(LocationServiceImpl.class);
+
 	@Override
-	@Transactional(rollbackFor=Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public Location save(Location location) {
 		return locationRepository.save(location);
 	}
 
-
 	@Override
 	public Location findById(long id) {
+		LOGGER.info("findById: " + id);
 		Optional<Location> location = locationRepository.findById(id);
 		if (location.isPresent()) {
 			return location.get();
@@ -71,9 +79,11 @@ public class LocationServiceImpl implements LocationService {
 	}
 
 	@Override
-	@Transactional(rollbackFor=Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public RestResponse addLocation(String locationJson)
 			throws JsonParseException, JsonMappingException, IOException, CityNotFoundException, ParseException {
+
+		LOGGER.info("addLocation: " + locationJson);
 		RestResponse restResponse;
 
 		LocationDto locationDto = this.mapper.readValue(locationJson, LocationDto.class);
@@ -118,9 +128,10 @@ public class LocationServiceImpl implements LocationService {
 	}
 
 	@Override
-	@Transactional(rollbackFor=Exception.class)
-	public Location deleteLocationOfBoard(String boardId,String woeid) throws JsonParseException, JsonMappingException,
+	@Transactional(rollbackFor = Exception.class)
+	public Location deleteLocationOfBoard(String boardId, String woeid) throws JsonParseException, JsonMappingException,
 			IOException, BoardNotFoundException, LocationNotFoundException {
+		LOGGER.info("deleteLocationOfBoard: " + "board: " + boardId + " - woeid: " + woeid);
 		Location location = this.findById(Long.parseLong(woeid));
 
 		Board boardToDelete = new Board();
@@ -140,12 +151,13 @@ public class LocationServiceImpl implements LocationService {
 
 	@Override
 	public List<Location> findAll() {
+		LOGGER.info("findAll()");
 		return locationRepository.findAll();
 	}
 
 	@Override
 	public List<LocationDto> getLocationsByBoard(String boardId) {
-
+		LOGGER.info("getLocationsByBoard: " + "board: " + boardId);
 		Board board = boardService.findBoardById(Long.parseLong(boardId));
 		Set<Board> boards = new HashSet<Board>();
 		boards.add(board);
@@ -156,11 +168,6 @@ public class LocationServiceImpl implements LocationService {
 			locationsDto.add(locationDto);
 		}
 		return locationsDto;
-		
-		
-		
 	}
-
-
 
 }

@@ -36,6 +36,7 @@ public class WeatherPointController {
 	 */
 	@GetMapping("/weatherpoints/{woeid}")
 	public QueryResult getWeatherPointsByLocation(@PathVariable String woeid) {
+		LOGGER.info("GetMapping: " + "weatherpoints/"+woeid);
 		WeatherPointDto lastWeatherPoint = weatherPointService.getLastWeatherPointByLocation(woeid);
 		List<WeatherPointDto> weatherPoints = new ArrayList<WeatherPointDto>();
 		weatherPoints.add(lastWeatherPoint);
@@ -47,12 +48,14 @@ public class WeatherPointController {
 	 * Gets the weather points by location and date.
 	 *
 	 * @param woeid the woeid
-	 * @param date the date
+	 * @param date  the date
 	 * @return the weather points by location and date
 	 */
 	@GetMapping("/weatherpoints/{woeid}/{date}")
-	public QueryResult getWeatherPointsByLocationAndDate(@PathVariable String woeid,@PathVariable Long date) {
-		List<WeatherPointDto> weatherPointByLocationAndDate = weatherPointService.getWeatherPointByLocationAndDate(woeid, date);
+	public QueryResult getWeatherPointsByLocationAndDate(@PathVariable String woeid, @PathVariable Long date) {
+		LOGGER.info("GetMapping: " + "weatherpoints/"+woeid+"/"+date);
+		List<WeatherPointDto> weatherPointByLocationAndDate = weatherPointService
+				.getWeatherPointByLocationAndDate(woeid, date);
 		RestResponse restResponse = new RestResponse(HttpStatus.OK.value(), "Ok");
 		return new QueryResult(restResponse, new ArrayList<Object>(weatherPointByLocationAndDate));
 	}

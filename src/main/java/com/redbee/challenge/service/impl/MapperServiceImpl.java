@@ -1,8 +1,5 @@
 package com.redbee.challenge.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 import com.redbee.challenge.dto.BoardDto;
@@ -15,6 +12,10 @@ import com.redbee.challenge.model.User;
 import com.redbee.challenge.model.WeatherPoint;
 import com.redbee.challenge.service.MapperService;
 
+/**
+ * @author Andres Cassanaz
+ *
+ */
 @Service
 public class MapperServiceImpl implements MapperService {
 

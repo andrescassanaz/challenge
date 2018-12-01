@@ -1,25 +1,38 @@
 package com.redbee.challenge.controller;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.concurrent.ScheduledExecutorService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+import com.redbee.challenge.service.WebSocketService;
+
+@RestController
 public class WebSocketController {
+	
+	private static Logger LOGGER = LoggerFactory.getLogger(WebSocketController.class);
 
-    private final SimpMessagingTemplate template;
+	@Autowired
+	WebSocketService webSocketService;
+	ScheduledExecutorService currentExecutor;
 
-    @Autowired
-    WebSocketController(SimpMessagingTemplate template){
-        this.template = template;
-    }
+	@PostMapping("/startScheduler")
+	public void startScheduler(@RequestBody String username) {
+		LOGGER.info("PostMapping: /startScheduler");
+		webSocketService.startWebsocketScheduler(username);
+	}
 
-    @MessageMapping("/send/message")
-    public void onReceivedMesage(String message){
-        this.template.convertAndSend("/chat",  new SimpleDateFormat("HH:mm:ss").format(new Date())+"- "+message);
-    }
+	@PostMapping("/stopScheduler")
+	public void StopSchedule() {
+		LOGGER.info("PostMapping: /stopScheduler");
+		webSocketService.stopWebsocketScheduler();
+
+	}
+	
+	
+
 }

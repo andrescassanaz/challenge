@@ -79,5 +79,8 @@ public interface BoardService {
 	 */
 	public void delete(String boardId) throws JsonParseException, JsonMappingException, IOException;
 
+	List<BoardDto> getBoardsWithLocationsAndWeatherpointsByUser(String userJson)
+			throws JsonParseException, JsonMappingException, IOException, ParseException, CityNotFoundException;
+
 
 }
