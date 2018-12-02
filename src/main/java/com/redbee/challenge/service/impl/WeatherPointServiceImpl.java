@@ -49,7 +49,7 @@ public class WeatherPointServiceImpl implements WeatherPointService {
 	@Override
 	@Transactional(rollbackFor=Exception.class)
 	public WeatherPoint save(WeatherPoint weatherPoint) {
-		LOGGER.info("save: "+ weatherPoint.getId() + " " + weatherPoint.getLocation().getCity());
+		LOGGER.info("save: "+ weatherPoint.getLocation().getCity());
 		return weatherPointRepository.save(weatherPoint);
 	}
 

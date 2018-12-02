@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.redbee.challenge.controller.BoardController;
 import com.redbee.challenge.dto.BoardDto;
 import com.redbee.challenge.dto.LocationDto;
 import com.redbee.challenge.dto.WeatherPointDto;

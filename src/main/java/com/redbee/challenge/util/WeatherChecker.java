@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,9 @@ public class WeatherChecker {
 
 	@Autowired
 	WeatherCheckerService weatherCheckerService;
+	
+	@Value("${weather.checker.scheduled.task.interval}")
+	private int weatherCheckerScheduledTaskInterval;
 
 	Runnable startChecker = new Runnable() {
 		public void run() {
@@ -51,7 +55,7 @@ public class WeatherChecker {
 	public void start() {
 		LOGGER.info("Start WeatherChecker scheduled task");
 		ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-		executor.scheduleAtFixedRate(startChecker, 0, 30, TimeUnit.MINUTES);
+		executor.scheduleAtFixedRate(startChecker, 0, weatherCheckerScheduledTaskInterval, TimeUnit.MINUTES);
 
 	}
 }

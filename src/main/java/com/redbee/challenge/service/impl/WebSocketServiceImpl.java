@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,9 @@ public class WebSocketServiceImpl implements WebSocketService {
 
 	private static Logger LOGGER = LoggerFactory.getLogger(WebSocketServiceImpl.class);
 	private final SimpMessagingTemplate template;
+	
+	@Value("${web.socket.scheduled.task.interval}")
+	private int webSocketScheduledTaskInterval;
 
 	@Autowired
 	BoardService boardService;
@@ -44,7 +48,7 @@ public class WebSocketServiceImpl implements WebSocketService {
 		LOGGER.info("Start Websocket Scheduler");
 		this.username = username;
 		currentExecutor = Executors.newScheduledThreadPool(1);
-		currentExecutor.scheduleAtFixedRate(startChecker, 0, 1, TimeUnit.MINUTES);
+		currentExecutor.scheduleAtFixedRate(startChecker, 0, webSocketScheduledTaskInterval, TimeUnit.MINUTES);
 	}
 
 	@Override

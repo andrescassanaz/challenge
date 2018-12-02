@@ -4,9 +4,9 @@ import java.util.Calendar;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.redbee.challenge.exception.YahooApiCallLimitExceededException;
 import com.redbee.challenge.model.ApiCounter;
 import com.redbee.challenge.repository.ApiCounterRepository;
 import com.redbee.challenge.service.ApiCounterService;
@@ -16,6 +16,9 @@ public class ApiCounterServiceImpl implements ApiCounterService {
 
 	@Autowired
 	ApiCounterRepository apiCounterRepository;
+	
+	@Value("${yahoo.api.limit.call.per.day}")
+	private int yahooApiLimitCallPerDay;
 
 	@Override
 	public void updateDate() {
@@ -35,7 +38,7 @@ public class ApiCounterServiceImpl implements ApiCounterService {
 	public boolean callLimitExceeded() {
 		boolean callLimitExceeded = false;
 		ApiCounter apiCounter = getTheApiCounter();
-		if (apiCounter.getApiCalls() >= 2000) {
+		if (apiCounter.getApiCalls() >= yahooApiLimitCallPerDay) {
 			callLimitExceeded = true;
 		}
 		return callLimitExceeded;

@@ -28,6 +28,7 @@ import com.redbee.challenge.util.yahoo.api.data.YahooApiResponse;
 public class YahooRestClientService {
 
 	/** The Constant URL of API. */
+	
 	private static final String URL = "http://query.yahooapis.com/v1/public/yql";
 	private static Logger LOGGER = LoggerFactory.getLogger(YahooRestClientService.class);
 
