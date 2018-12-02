@@ -45,8 +45,6 @@ public class MapperServiceImpl implements MapperService {
 		UserDto dto = new UserDto();
 		dto.setUsername(user.getUsername());
 		dto.setUsername(user.getUsername());
-		dto.setToken(user.getToken());
-		dto.setType(user.getType());
 		
 		return dto;
 	}

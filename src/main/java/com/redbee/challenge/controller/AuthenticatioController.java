@@ -39,14 +39,13 @@ public class AuthenticatioController {
 	/**
 	 * Login.
 	 *
-	 * @param user the user
+	 * @param user The user
 	 * @return a QueryResult
 	 */
 	@PostMapping("/login")
 	public QueryResult login(@RequestBody User user) {
 		LOGGER.info("PostMapping: " + "/login");
-		User userAuth = autenticationService.login(user);
-		UserDto userDto = mapperService.mapUserToDto(userAuth);
+		UserDto userDto = autenticationService.login(user);
 		
 		List<UserDto> users = new ArrayList<UserDto>();
 		users.add(userDto);

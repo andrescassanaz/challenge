@@ -7,6 +7,10 @@ import org.springframework.stereotype.Repository;
 
 import com.redbee.challenge.model.ApiCounter;
 
+/**
+ * @author Andres Cassanaz
+ *
+ */
 @Repository
 public interface ApiCounterRepository extends JpaRepository<ApiCounter, Serializable> {
 

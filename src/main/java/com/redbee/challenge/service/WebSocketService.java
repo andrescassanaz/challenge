@@ -6,8 +6,16 @@ package com.redbee.challenge.service;
  */
 public interface WebSocketService {
 
+	/**
+	 * Start the scheduled task in the websocket
+	 * 
+	 * @param username
+	 */
 	public void startWebsocketScheduler(String username);
 
+	/**
+	 * stop the scheduled task in the websocket
+	 */
 	public void stopWebsocketScheduler();
 
 }

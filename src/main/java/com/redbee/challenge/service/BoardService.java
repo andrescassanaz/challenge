@@ -79,6 +79,16 @@ public interface BoardService {
 	 */
 	public void delete(String boardId) throws JsonParseException, JsonMappingException, IOException;
 
+	/**
+	 * Returns the list of boards of a user, filled with their locations and weatherpoints
+	 * @param userJson
+	 * @return the list of boards of a user, filled with their locations and weatherpoints
+	 * @throws JsonParseException
+	 * @throws JsonMappingException
+	 * @throws IOException
+	 * @throws ParseException
+	 * @throws CityNotFoundException
+	 */
 	List<BoardDto> getBoardsWithLocationsAndWeatherpointsByUser(String userJson)
 			throws JsonParseException, JsonMappingException, IOException, ParseException, CityNotFoundException;
 

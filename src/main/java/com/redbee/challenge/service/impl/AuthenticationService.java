@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.redbee.challenge.configuration.JwtService;
+import com.redbee.challenge.dto.UserDto;
 import com.redbee.challenge.model.User;
 import com.redbee.challenge.service.UserService;
 
@@ -32,7 +33,7 @@ public class AuthenticationService implements com.redbee.challenge.service.Authe
 	private JwtService jwtService;
 
 	@Override
-	public User login(User user) {
+	public UserDto login(User user) {
 		LOGGER.info("login(): " + user.getUsername());
 		final Authentication authentication;
 
@@ -41,13 +42,13 @@ public class AuthenticationService implements com.redbee.challenge.service.Authe
 
 		String tokenJwt = jwtService.generateToken(user.getUsername());
 		
-		User dbUser = userService.findByUsername(user.getUsername());
-		user.setType(dbUser.getType());
-		user.setPassword(null);
-		user.setToken(tokenJwt);
+		UserDto userDto = new UserDto();
+		userDto.setUsername(user.getUsername());
+		userDto.setPassword(null);
+		userDto.setToken(tokenJwt);
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-		return user;
+		return userDto;
 
 	}
 }

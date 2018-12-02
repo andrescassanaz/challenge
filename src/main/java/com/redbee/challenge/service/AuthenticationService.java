@@ -1,5 +1,6 @@
 package com.redbee.challenge.service;
 
+import com.redbee.challenge.dto.UserDto;
 import com.redbee.challenge.model.User;
 
 /**
@@ -14,6 +15,6 @@ public interface AuthenticationService {
 	 * @param user the user
 	 * @return the user
 	 */
-	User login(User user);
+	UserDto login(User user);
 
 }

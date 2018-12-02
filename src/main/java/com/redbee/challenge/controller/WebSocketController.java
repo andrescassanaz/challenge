@@ -20,12 +20,19 @@ public class WebSocketController {
 	WebSocketService webSocketService;
 	ScheduledExecutorService currentExecutor;
 
+	/**
+	 * Start the scheduled task in the websocket
+	 * @param username
+	 */
 	@PostMapping("/startScheduler")
 	public void startScheduler(@RequestBody String username) {
 		LOGGER.info("PostMapping: /startScheduler");
 		webSocketService.startWebsocketScheduler(username);
 	}
 
+	/**
+	 * Stop the scheduled task in the websocket
+	 */
 	@PostMapping("/stopScheduler")
 	public void StopSchedule() {
 		LOGGER.info("PostMapping: /stopScheduler");
