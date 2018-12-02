@@ -1,5 +1,9 @@
 package com.redbee.challenge.service;
 
+import java.io.IOException;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.redbee.challenge.model.User;
 
 /**
@@ -11,10 +15,13 @@ public interface UserService {
 	/**
 	 * Save.
 	 *
-	 * @param user the user
+	 * @param userJson the user
 	 * @return the saved user
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonParseException 
 	 */
-	public User save(User user);
+	public User save(String userJson) throws JsonParseException, JsonMappingException, IOException;
 	
 
 	/**
