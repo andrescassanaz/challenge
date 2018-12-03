@@ -33,7 +33,6 @@ public class UserController {
 
 	private static Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 	
-	private static int INTERNAL_SERVER_ERRROR = HttpStatus.INTERNAL_SERVER_ERROR.value();
 
 	/**
 	 * Gets the user.
@@ -55,24 +54,5 @@ public class UserController {
 		return queryResult;
 	}
 
-	@PutMapping("/users")
-	public RestResponse addUser(@RequestBody String userJson) {
-		LOGGER.info("PutMapping: " + "/users/ : " + userJson);
-		RestResponse restResponse;
-		try {
-			userService.save(userJson);
-		} catch (JsonParseException e) {
-			restResponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: JsonParseException");
-			LOGGER.error(restResponse.getMessage());
-		} catch (JsonMappingException e) {
-			restResponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: JsonMappingException");
-			LOGGER.error(restResponse.getMessage());
-		} catch (IOException e) {
-			restResponse = new RestResponse(INTERNAL_SERVER_ERRROR, "Server error: IOException");
-			LOGGER.error(restResponse.getMessage());
-		}
-		restResponse = new RestResponse(HttpStatus.OK.value(), "Ok");
-		return restResponse;
-	}
 
 }
